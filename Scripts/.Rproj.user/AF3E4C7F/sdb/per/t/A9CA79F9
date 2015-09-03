@@ -1,0 +1,18 @@
+{
+    "contents" : "---\ntitle: \"data.table package\"\nauthor: \"by Craig W. Slinkman\"\ndate: \"September 3, 2015\"\noutput: html_document\n---\n\nWithin the last year that has been an upgrade to the data.frame that is more efficient than a data.frame in programming time, processing time, and storage space. This new upgrade is called the data.table.  \n\n## Packages\n\nA package is a grouped set of  functionality that does not come with the base-R functionaility.  To use a package we must functionality we must install the package on our version.  Then before we use we must load the package into our R-environment. \n\nTo load the environment we use the following menu path\n\n$$Menu --> Tools --> Install Packages$$\n\nWe then type $data.table$ in the package box and click OK.  \n\nto use the data.frame package we must either load the package with the $library$ function or load it with the $require$ function.  I tend to use the $require$  function.\n\n## Loading the $data.table$ package \n\n```{r, library}\n\nlibrary( data.table )\n\n```\n\nOr we can use the $require$ function:\n\n```{r}\nrequire( data.table )\n```\n\nWe will now read the $Flights.csv$ table in the data folder.  We do this to save time so we do not get networks delay.  The $data.table$ package gas a very fast read function called $fread$.  We use the $fread$ as follows:  \n```{r,fread}\nrequire( data.table )\n\ninFile <- \n    file.path( getwd(),         # Specify path to file\n               \"data\",\n               \"Flights.csv\")\n\n\nFlights <- fread( inFile )      # Read Flight.csv file\n\ntables()                        # Display data about tables\n\nFlights                         # Display some content of Flights  \n\n\n```\n\n## $data.table$ subset selection\n\nIt is simpler assnd faster to do subset selction with a $data.table$ object.  \n\n```{r,subset}\nDFW <- Flights[dest==\"DFW\", ]\ntables()\n```\n\n## Computing statistics with $data.table$\nWe can compute statiustics with $data.table$'s.  We first compute the total delay as before:  \n```{r,statistics}\nDFW[ , tot_delay := dep_delay + arr_delay ]\nwith( DFW, hist( tot_delay ) )\nwith( DFW, boxplot( tot_delay ) )\nwith( DFW, summary( tot_delay ) )\n```\n\n ",
+    "created" : 1441303933983.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "239631908",
+    "id" : "A9CA79F9",
+    "lastKnownWriteTime" : 1441307931,
+    "path" : "C:/Users/Craig/BSTAT3322/Scripts/0070-datatables.Rmd",
+    "project_path" : "0070-datatables.Rmd",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "type" : "r_markdown"
+}

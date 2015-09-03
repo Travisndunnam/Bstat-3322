@@ -1,0 +1,73 @@
+---
+title: "data.table package"
+author: "by Craig W. Slinkman"
+date: "September 3, 2015"
+output: html_document
+---
+
+Within the last year that has been an upgrade to the data.frame that is more efficient than a data.frame in programming time, processing time, and storage space. This new upgrade is called the data.table.  
+
+## Packages
+
+A package is a grouped set of  functionality that does not come with the base-R functionaility.  To use a package we must functionality we must install the package on our version.  Then before we use we must load the package into our R-environment. 
+
+To load the environment we use the following menu path
+
+$$Menu --> Tools --> Install Packages$$
+
+We then type $data.table$ in the package box and click OK.  
+
+to use the data.frame package we must either load the package with the $library$ function or load it with the $require$ function.  I tend to use the $require$  function.
+
+## Loading the $data.table$ package 
+
+```{r, library}
+
+library( data.table )
+
+```
+
+Or we can use the $require$ function:
+
+```{r}
+require( data.table )
+```
+
+We will now read the $Flights.csv$ table in the data folder.  We do this to save time so we do not get networks delay.  The $data.table$ package gas a very fast read function called $fread$.  We use the $fread$ as follows:  
+```{r,fread}
+require( data.table )
+
+inFile <- 
+    file.path( getwd(),         # Specify path to file
+               "data",
+               "Flights.csv")
+
+
+Flights <- fread( inFile )      # Read Flight.csv file
+
+tables()                        # Display data about tables
+
+Flights                         # Display some content of Flights  
+
+
+```
+
+## $data.table$ subset selection
+
+It is simpler assnd faster to do subset selction with a $data.table$ object.  
+
+```{r,subset}
+DFW <- Flights[dest=="DFW", ]
+tables()
+```
+
+## Computing statistics with $data.table$
+We can compute statiustics with $data.table$'s.  We first compute the total delay as before:  
+```{r,statistics}
+DFW[ , tot_delay := dep_delay + arr_delay ]
+with( DFW, hist( tot_delay ) )
+with( DFW, boxplot( tot_delay ) )
+with( DFW, summary( tot_delay ) )
+```
+
+ 

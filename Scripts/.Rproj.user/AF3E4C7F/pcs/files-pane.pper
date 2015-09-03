@@ -1,8 +1,8 @@
 {
-    "path" : "C:/Users/Craig/utaBSTAT3322/Scripts",
+    "path" : "C:/Users/Craig/BSTAT3322/Scripts/data",
     "sortOrder" : [
         {
-            "ascending" : true,
+            "ascending" : false,
             "columnIndex" : 2
         }
     ]

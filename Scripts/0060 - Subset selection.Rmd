@@ -1,0 +1,54 @@
+---
+title: "0060 - Subset selection in R"
+author: "by Craig W. Slinkman"
+date: "September 3, 2015"
+output: html_document
+---
+
+The data we will use iis NYC-flights14 data. It contains On-Time flights data from the Bureau of Transporation Statistics for all the flights that departed from New York City airports in 2014 (inspired by nycflights13). The data is available only for the period Jan-Oct’14.  
+
+We read in the flights data as follows.  Note that this may take some time:
+
+```{r,getData}
+URL <-
+    "https://raw.githubusercontent.com/wiki/arunsrinivasan/flights/NYCflights14/flights14.csv"
+
+Flights <- read.csv( URL,            # Read form github
+                     header=TRUE )
+
+wd       <- getwd()                        # Working directory
+outFile  <- "Flights.csv"                  # Save the data localy
+outPath <-file.path( wd,
+                      "data",
+                      "Fligths.csv")
+
+write.csv( Flights, file=outPath )
+
+head(Flights)
+tail(Flights)
+str(Flights)
+```
+
+## Selecting all the DFW flights form New York Airports
+Suppose we are interest in the late time of all airlines that fly from New Yoirk Airports to DFW.  We can get this data as follows:
+
+```{r}
+DFW <- Flights[ Flights$dest == "DFW", ]
+```
+
+Now suppose we want to compute sunnary statistics on the total delay ( including departure delay and arrival delay ).  We add a new variable to the DFW data.frame:
+
+```{r,totalDelay}
+DFW$tot_delay <- with( DFW, dep_delay + arr_delay )
+```
+
+We can now summerize the total delay using R's statistical graphics ancd functions.
+
+```{r,analysis}
+with( DFW, hist( tot_delay))
+with( DFW, boxplot( tot_delay ))
+with( DFW, summary( tot_delay ))
+with( DFW, sd( tot_delay ))
+
+```
+

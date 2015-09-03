@@ -1,0 +1,18 @@
+{
+    "contents" : "---\ntitle: \"0060 - Subset selection in R\"\nauthor: \"by Craig W. Slinkman\"\ndate: \"September 3, 2015\"\noutput: html_document\n---\n\nThe data we will use iis NYC-flights14 data. It contains On-Time flights data from the Bureau of Transporation Statistics for all the flights that departed from New York City airports in 2014 (inspired by nycflights13). The data is available only for the period Jan-Oct’14.  \n\nWe read in the flights data as follows.  Note that this may take some time:\n\n```{r,getData}\nURL <-\n    \"https://raw.githubusercontent.com/wiki/arunsrinivasan/flights/NYCflights14/flights14.csv\"\n\nFlights <- read.csv( URL,            # Read form github\n                     header=TRUE )\n\nwd       <- getwd()                        # Working directory\noutFile  <- \"Flights.csv\"                  # Save the data localy\noutPath <-file.path( wd,\n                      \"data\",\n                      \"Fligths.csv\")\n\nwrite.csv( Flights, file=outPath )\n\nhead(Flights)\ntail(Flights)\nstr(Flights)\n```\n\n## Selecting all the DFW flights form New York Airports\nSuppose we are interest in the late time of all airlines that fly from New Yoirk Airports to DFW.  We can get this data as follows:\n\n```{r}\nDFW <- Flights[ Flights$dest == \"DFW\", ]\n```\n\nNow suppose we want to compute sunnary statistics on the total delay ( including departure delay and arrival delay ).  We add a new variable to the DFW data.frame:\n\n```{r,totalDelay}\nDFW$tot_delay <- with( DFW, dep_delay + arr_delay )\n```\n\nWe can now summerize the total delay using R's statistical graphics ancd functions.\n\n```{r,analysis}\nwith( DFW, hist( tot_delay))\nwith( DFW, boxplot( tot_delay ))\nwith( DFW, summary( tot_delay ))\nwith( DFW, sd( tot_delay ))\n\n```\n\n",
+    "created" : 1441299974767.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3723112788",
+    "id" : "5FE7D6A4",
+    "lastKnownWriteTime" : 1441305840,
+    "path" : "C:/Users/Craig/BSTAT3322/Scripts/0060 - Subset selection.Rmd",
+    "project_path" : "0060 - Subset selection.Rmd",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "type" : "r_markdown"
+}
