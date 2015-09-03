@@ -1,0 +1,117 @@
+---
+title: "0020 - Vectors and data.frames"
+author: "by Craig W. Slinkman"
+date: "August 31, 2015"
+output: html_document
+---
+
+## A sample problem
+Suppose a family of four goes to a fate-food hambeurger resturarnt and places the following order.
+
+Food item       | Quantity |  Price  
+----------------|----------|---------
+Hamburger       |   3     |  $3.75 
+Delux Cheeseburger | 1 | $ 5.75  
+French fries    |    2      | $1.75
+Onion rings     |   1   |     $2.00 
+Soft drings     |   2   |     $0.99
+Milkshake       |   1   | $3.25  
+Beer            |   1   | $4.75
+
+We will investigate how to compute the order total using R and then compute the average cost per person.  
+
+## Vector
+
+R operates on named data structures. The simplest such structure is the numeric vector, which is a single entity consisting of an ordered collection of numbers.  To set up the numeric quantites given above we duse the following statements:
+
+```{r,vector}
+
+quantity <- c( 3, 1, 2, 1, 2, 1, 1 )
+quantity
+
+price <- c( 3.75, 5.75, 1.75 , 2.00, 0.99, 3.25, 4.75  )
+price 
+```
+
+  
+This is an assignment statement using the function c() which in this context can take an arbitrary number of vector arguments and whose value is a vector got by concatenating its arguments end to end.  
+We can also create character vecors as follows:
+
+```{r,CharacterVectors}
+foodItem <- c( "Hamburger", 
+               "Delux Cheesesburger",
+               "French Fires",
+               "Onion Rings",
+               "Medium Soft Srink",
+               "Milkshake",
+               "Beer" )
+foodItem
+
+```
+  
+## Acessing one or more elements of a vector
+
+```{r}
+
+foodItem[3]        # Retirteve the the thrid fooditem on the order
+foodItem[ 1:2 ]    # Retreive the first two items in the order
+
+```
+
+## computing the length of a vector
+```{r,Length}
+
+length(foodItem)
+length( quantity)
+length( price )
+
+```
+
+## Elementwise arthimetic
+Vector arthimetic proceeds in an element-wise manner:
+```{r,VectorArthimetic}
+extension <-quantity * price
+extension
+```
+
+## A single number times a vector
+```{r,MoreVectorArthimetic}
+2 * quantity
+round( 1.10 * price, 2 )
+```
+
+## Creating a data frame
+```{r,dataframe}
+Order <- data.frame(  foodItem, quantity, price  )
+Order
+
+```
+  
+ # Clear memory
+ 
+ 
+```{r,remove}
+ls()      # List environment  contents        # List objecs
+rm( foodItenm, quantity, price, extension )   # Remove objects
+ls()                                          # Relist objects
+
+```
+
+## Acessing a vector in data.frame
+
+```{r,AcessingDataFrame}
+
+Order$quantity
+with( Order, quantity)
+#
+Order$Price
+with( Order, price )
+#
+Order$quantity * Order$price
+with( Order, quantity * price )
+#
+ybar <- with( Order, sum( quantity * price )) / 4
+ybar
+
+```
+

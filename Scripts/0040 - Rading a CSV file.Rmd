@@ -1,0 +1,70 @@
+---
+title: "0040 - Reading a CSV File"
+author: "by Craig W. Slinkman"
+date: "September 1, 2015"
+output: html_document
+---
+
+# Readin a CSV (Coma Serated Variable File)---
+title: "0040 - Reading a CSV File"
+author: "by Craig W. Slinkman"
+date: "September 1, 2015"
+output: html_document
+---
+
+# Readin a CSV (Coma Serated Variable File)
+A comma seperated variable file (CSV) is a file where the variables aere seperated by commas.
+
+## Example
+Go to the data director and double click on the file name $Chocolate.csv$ to see what a CSV file looks like.
+
+## read.csv file
+The code below shows how to read a comma seperated variable file.  
+
+```{r}
+
+rm( list=ls() )
+
+wd   <- getwd()                   # Get working directory 
+file <- "Chocolate.csv"           # File name
+( path <- file.path( wd,        # Construct complete file path
+                   "data",
+                    file ) )
+
+Chocolate <-                      # Dataframe name ic Choclate
+    read.csv( path,               # path specifiles file location and name
+              header=TRUE )       # Varible names in header
+
+head( Chocolate )                 # Display first 6 rows of data frame.
+```
+
+
+
+A comma seperated variable file (CSV) is a file where the variables aere seperated by commas.
+
+## Example
+Go to the data director and double click on the file name $Chocolate.csv$ to see what a CSV file looks like.
+
+## read.csv file
+The code below shows how to read a comma seperated variable file.  
+
+```{r,csv}
+
+rm( list=ls() )
+
+wd   <- getwd()                   # Get working directory 
+file <- "Chocolate.csv"           # File name
+path <- file.path( wd,            # Construct complete file path
+                   "data",
+                    file )
+
+Chocolate <- 
+    read.csv( path, 
+              header=TRUE )
+
+head( Chocolate )
+
+
+```
+
+

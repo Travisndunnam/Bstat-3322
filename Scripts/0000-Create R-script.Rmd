@@ -1,0 +1,16 @@
+---
+title: "0000 - Creating a script file"
+author: "by Craig W. Slinkman"
+date: "September 3, 2015"
+output: html_document
+---
+
+# Creating s script file with RStudio
+
+1. Open RStudio  
+
+2. Menu --> File --> Script (or + --> drop down -- R script )  
+
+3. Enter R statements  
+
+4. Save file as
