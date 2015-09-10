@@ -1,0 +1,56 @@
+---
+title: "Normal Distributions, Boxplots, and Outliers"
+author: "by Craig W. Slinkman"
+date: "September 7, 2015"
+output: word_document
+---
+
+Suppose we have a normal distribution with a mean of $\mu$ and a standard deviation of $\sigma$.  We want ti determine $Q_1$ and $Q_3$ for this distribution in terms of $\mu$ and $\sigma$.  
+
+We know that 
+
+$$z_{0.25}=\frac{y_{0.25}-\mu}{\sigma}$$
+
+Solving for $y_{0.25}$ we obtain
+
+$$y_{0.25}=\mu+\sigma z_{0.25}$$
+
+LIkewise for Q3 we find
+
+$$y_{0.75}=\mu+\sigma z_{0.75}$$
+
+We can now compute the IQR for a normal distribution with mean $\mu$ and $\sigma$.
+
+$$IQR=y_{0.75}-Y_{0.25}=\mu+\sigma z_{0.75}-(=\mu+\sigma z_{0.25})=\sigma ( z_{0.75}-z_{0.25})$$
+
+Simplfying and observing that 
+
+$$z_{0.25}=-z_{0.75}$$   
+
+we obtain  
+
+$$IQR=2*z_{0.75}\sigma$$
+
+Since  
+$$z_{0.75}=`r round( qnorm( 0.75 ), 3)`$$
+
+We express the inter-quartile range, $IQR$ in terms of the standard deviation, $\sigma$  
+
+$$IQR=`r round( 2 * qnorm( 0.75),3)` \sigma$$
+
+Now we compute the value of the the largerst data point that is not decalred to be an outlier.  To do this we nultiply the IQR by 1.5 and add it the $75^{th}$ percentile.  
+
+```{r}
+Q1 <- qnorm( 0.25 )
+Q3 <- qnorm(0.75 )
+IQR <- Q3 - Q1
+d <- 1.5 * IQR
+L <- Q1 - d
+U <- Q3 + d
+c( L, U )
+2 * pnorm( L )
+
+```
+
+
+

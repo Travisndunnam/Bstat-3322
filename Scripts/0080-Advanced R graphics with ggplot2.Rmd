@@ -37,8 +37,14 @@ require( data.table )           # We will use data.tables.
 
 BRK.A <- fread( path )          # Get data.
 
-head( BRK.A )                   # Check if we got the correct data.
-tail( BRK.A )
+n <- dim( BRK.A )[1]
+
+for( i in 2:n )BRK.A$Return[i] <- log(  BRK.A$BRK.A.Close[i]) - 
+                                  log(  BRK.A$BRK.A.Close[i-1])
+
+BRK.A <- BRK.A[-1,]
+
+write.csv( BRK.A, file=path )
 
 ```
 
@@ -242,6 +248,8 @@ require( data.table )                # For fread functionality.
 
 KBS <- fread( filePath )             # Read file into data.table.
 
+KBS$Revenue <- as.numeric(  KBS$Revenue  )
+
 KBS <-                               #Wliminate missing values.
     KBS[ complete.cases( KBS)]
 
@@ -365,7 +373,7 @@ model <- lm( rBRK.A ~ rSP500, data=BRK.A )
 round( coef( model ),5 )
 ```
 
-
+  In the capital asset pricing model the interpretation of the slope is that it is the estimated increase in the return of the asset (stock) per unit increase in the return on the SP500.  So if the SP500 increase by 1.00% then the return on Merkshire Hathaway will increase by `r round( coef( model ),5 )'. 
 
 
 

@@ -1,0 +1,18 @@
+{
+    "contents" : "# 0000-Download stock data\n\nrm( list=ls())\n\nrequire( quantmod )\nrequire( data.table )\n\ngetSymbols( \"BRK.A\", src=\"google\")\nBRK.A <- data.frame( data.frame( BRK.A ))\nn <- dim( BRK.A )[1]\nlast <- n\nfirst <- n - 261L\n\n\nBRK.A <- BRK.A[first:last,]\nn <- dim( BRK.A )[1]\n\nrBRK.A <- rep(NA, n)\n\nfor( i in 2:n ){\n    rBRK.A[i] <- log( BRK.A[i,4]) - log( BRK.A[i-1,4])\n}\n\nrBRK.A <- rBRK.A[2:n]\n\nwrite.csv( BRK.A, file=path )\n\ngetSymbols( \"SP500\", src=\"FRED\" )  \n\nSP500 <- data.frame( SP500 )\nhead( SP500 )\ntail( SP500 )\n\nlast  <- dim(SP500)[1]\nfirst <- last - 261L\n\nSP500 <- SP500[ first:last,1]\n\n\nlength(SP500)\ndim( BRK.A  )\n\nrSP500 <- rep( NA, n)\n\nfor( i in 2:n){\n    rSP500[i] <- log( SP500[i] ) - log(SP500[i-1])\n}\n\nrSP500 <- rSP500\n\nCAPM <- data.frame( rSP500, rBRK.A )\n\nfilePath <- file.path( getwd(),\n                       \"data\",\n                       \"capmBrk.A.csv\" )\nwrite.csv( CAPM, file=filePath )\n\n",
+    "created" : 1441655108886.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "959354113",
+    "id" : "A0BA7A83",
+    "lastKnownWriteTime" : 1441743883,
+    "path" : "C:/Users/Craig/BSTAT3322/Scripts/0000-downloadStockData.R",
+    "project_path" : "0000-downloadStockData.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

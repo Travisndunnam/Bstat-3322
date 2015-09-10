@@ -1,0 +1,38 @@
+---
+title: "003 - Reading a tab l,delimited text file"
+author: "by Craig W. Slinkman"
+date: "September 1, 2015"
+output: html_document
+---
+
+# R: Reading a tab delimited text file with R
+
+A tab delimited text file is a file where the columns between variable names are separated by the tab character which is denoted by "\t" in R.  If you double click on the data folder in the files directory you will find a file $06-natural_gas.txt$.  Double click on this file and it will be opened in the editor with a new edit window.
+
+## The read.table command
+
+### Dewsctiption
+Reads a file in table format and creates a data frame from it, with cases corresponding to lines and variables to fields in the file.
+
+### Useage
+
+$$read.table(file, header = FALSE, sep = "\t" )$$
+
+### Example
+
+```{r,readTable}
+
+rm( list=ls())          # Clear envirponment
+
+wd   <-  getwd()                        # Get workining directory
+file <- "06_natural_gas.txt"            # Specify file to be read
+path <- file.path( wd, "data", file )   # Complete path to file
+
+NaturalGas <- read.table( path,         # Path and file name.
+                          header=TRUE,  # File contains a header giving var names
+                          sep="\t" )    # Data is serperated by tabs
+
+head( NaturalGas )                      # Show first 6 rows
+tail( NaturalGas )                      # and last 7 rows
+```
+

@@ -1,0 +1,18 @@
+{
+    "contents" : "---\ntitle: \"Normal Distributions, Boxplots, and Outliers\"\nauthor: \"by Craig W. Slinkman\"\ndate: \"September 7, 2015\"\noutput: word_document\n---\n\nSuppose we have a normal distribution with a mean of $\\mu$ and a standard deviation of $\\sigma$.  We want ti determine $Q_1$ and $Q_3$ for this distribution in terms of $\\mu$ and $\\sigma$.  \n\nWe know that \n\n$$z_{0.25}=\\frac{y_{0.25}-\\mu}{\\sigma}$$\n\nSolving for $y_{0.25}$ we obtain\n\n$$y_{0.25}=\\mu+\\sigma z_{0.25}$$\n\nLIkewise for Q3 we find\n\n$$y_{0.75}=\\mu+\\sigma z_{0.75}$$\n\nWe can now compute the IQR for a normal distribution with mean $\\mu$ and $\\sigma$.\n\n$$IQR=y_{0.75}-Y_{0.25}=\\mu+\\sigma z_{0.75}-(=\\mu+\\sigma z_{0.25})=\\sigma ( z_{0.75}-z_{0.25})$$\n\nSimplfying and observing that \n\n$$z_{0.25}=-z_{0.75}$$   \n\nwe obtain  \n\n$$IQR=2*z_{0.75}\\sigma$$\n\nSince  \n$$z_{0.75}=`r round( qnorm( 0.75 ), 3)`$$\n\nWe express the inter-quartile range, $IQR$ in terms of the standard deviation, $\\sigma$  \n\n$$IQR=`r round( 2 * qnorm( 0.75),3)` \\sigma$$\n\nNow we compute the value of the the largerst data point that is not decalred to be an outlier.  To do this we nultiply the IQR by 1.5 and add it the $75^{th}$ percentile.  \n\n```{r}\nQ1 <- qnorm( 0.25 )\nQ3 <- qnorm(0.75 )\nIQR <- Q3 - Q1\nd <- 1.5 * IQR\nL <- Q1 - d\nU <- Q3 + d\nc( L, U )\n2 * pnorm( L )\n\n```\n\n\n\n",
+    "created" : 1441669743622.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "4101291138",
+    "id" : "3E73C1D0",
+    "lastKnownWriteTime" : 1441677451,
+    "path" : "C:/Users/Craig/BSTAT3322/Scripts/Normal Distributions, Boxplots, and Outliers.Rmd",
+    "project_path" : "Normal Distributions, Boxplots, and Outliers.Rmd",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "type" : "r_markdown"
+}

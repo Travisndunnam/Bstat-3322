@@ -1,0 +1,29 @@
+---
+title: "0050 - Reading a file with an URL"
+author: "by Craig W. Slinkman"
+date: "September 3, 2015"
+output: html_document
+---
+It is possible to read a file over the internet by specifing the location of the file with the url.  The file 
+
+$$http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.csv$$ 
+
+gives all the earthqukes in the world for the prior 30 daays.
+
+We can read this data into R as follows:
+```{r,url}
+URL <- 
+    "http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.csv"
+
+Quakes <- read.csv( URL,
+                    header=TRUE )
+head( Quakes )
+
+hist(  Quakes$mag )
+
+with( Quakes, hist(mag))
+with( Quakes, summary(mag))
+with( Quakes, sd(mag))
+```
+
+
