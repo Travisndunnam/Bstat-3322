@@ -1,0 +1,60 @@
+---
+title: "Mothers and daughter's height"
+author: "by Craig W. Slinkman"
+date: "September 15, 2015"
+output: word_document
+---
+
+This is an analysis of the linear relationship between the height of a daughter and the height of her mother.
+
+# the data 
+The data is in the __Heights__ data in the __alr4__ package.  We load the data below:  
+
+```{r}
+
+require( alr4 )     # We need this package for the Heights data.
+data( Heights )     # Import data.
+head( Heights )     # Verify data.
+tail( Heights )
+
+```
+ # Univariate analysis
+ 
+ ## Histogram
+ 
+```{r}
+
+require( ggplot2 )
+
+ggplot( Heights, 
+        aes( x=mheight )) +
+    geom_histogram( aes( y=..density.. ),
+                    binwidth=0.5,
+                    color ="blue",
+                    fill = "yellow" ) +
+    geom_density() + 
+    xlab( "Heights of mothers (inches) " ) +
+    ylab( "Density" ) +
+    ggtitle( "Mother's heights" )
+
+```
+
+# Descriptive statistucs
+
+```{r}
+summary( Heights )
+sd( Heights$mheight )
+```
+# Scatterplot and regression
+
+## SCatterplot
+```{r}
+
+ggplot( Heights,
+        aes( x= mheight, y=dheight )) +
+    geom_point() +
+    geom_smooth( method=loess, color="red") +
+    geom_smooth( method=lm  )
+    
+o```
+

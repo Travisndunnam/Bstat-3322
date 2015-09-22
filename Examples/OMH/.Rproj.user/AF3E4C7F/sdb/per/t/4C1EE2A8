@@ -1,0 +1,18 @@
+{
+    "contents" : "---\ntitle: \"Old Mother Hubard abd the UNited Nations I\"\nauthor: \"by Craig W. Slinkman\"\ndate: \"September 15, 2015\"\noutput: word_document\n---\n\n# Instroduction\n\nThis is an example of how to use R Markdown to create a document.\nin the document.  \n\nThis document is based on [Howard Warnier's] [1] _\"Old Mother Hubard and the United Nations: An Adventure in Exploratory Data Analysis_\"_. \n\n# The data\n\nThe dataset we use is located in the folder for this project.  We will read the data using the the R package $data.rable$.  We begin the analysis by loading the package and freading the data with the R-function fread.  \n\n```{r}\nrequire( data.table )        # Package needed to have R-function fread().\n\nOMH <- \n    fread( \"vwdata.txt\" )    # Read data.\n\nhead( OMH )                  # Confirm correct data is being used.\ntail( OMH )\n```\n\n\n# Univariate Analysis\n\n# Simple linear regression\n\n# Residual analysis\n\n# Prediction example\n",
+    "created" : 1442349605533.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "602736346",
+    "id" : "4C1EE2A8",
+    "lastKnownWriteTime" : 1442350475,
+    "path" : "C:/Users/Craig/BSTAT3322/Class examples/Old Mother Hubard and the UN/Example I.Rmd",
+    "project_path" : "Example I.Rmd",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "type" : "r_markdown"
+}

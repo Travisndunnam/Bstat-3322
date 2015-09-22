@@ -1,6 +1,6 @@
-# 0090-Bootstrap mean example
+# 0090-bootMean.r
 #
-# We doemonstrate the bootstrapping of the sample mean of the average
+# We demonstrate the bootstrapping of the sample mean of the average
 # commute time in Atlanta Georgia using the data provided at the
 # LOck5 Wed site: 
 # 
@@ -79,7 +79,7 @@ cat( "\nOrginal Sample Mean:        ", bootObject$t0,
 
 hist( bootObject,
       xlab = "Bootstrap samples", 
-      main = "Commpute Atlanta Bootstrap Sampling distribution")
+      main = "Commpute Atlanta \nMean Bootstrap Sampling distribution")
 
 ###########################################################
 # The bootstrap distribution appears to have a slightly   #
@@ -94,3 +94,10 @@ require( boot )
 boot.ci( bootObject,
          conf =c( 0.90, 0.95, 0.98, 0.99 ),
          type="all" )
+
+##########################################################
+# Conclusion                                             #
+# The bootstrap sampling distribution is mounded shaped  #
+# and slight skewed under these conditions we shpould    #
+# use the BCa confidence intervals.                      #
+##########################################################

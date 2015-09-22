@@ -79,7 +79,7 @@ cat( "\nOrginal Sample Mean:        ", bootObject$t0,
 
 hist( bootObject,
       xlab = "Bootstrap samples", 
-      main = "Commpute Atlanta Bootstrap Sampling distribution")
+      main = "Commpute Atlanta \nMean Bootstrap Sampling distribution")
 
 ###########################################################
 # The bootstrap distribution appears to have a slightly   #
@@ -94,3 +94,10 @@ require( boot )
 boot.ci( bootObject,
          conf =c( 0.90, 0.95, 0.98, 0.99 ),
          type="all" )
+
+##########################################################
+# Conclusion                                             #
+# The bootstrap sampling distribution is mounded shaped  #
+# and slight skewed under these conditions we shpould    #
+# use the BCa confidence intervals.                      #
+##########################################################

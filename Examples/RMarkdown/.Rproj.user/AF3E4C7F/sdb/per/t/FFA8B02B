@@ -1,0 +1,18 @@
+{
+    "contents" : "---\ntitle: \"Mothers and daughter's height\"\nauthor: \"by Craig W. Slinkman\"\ndate: \"September 15, 2015\"\noutput: word_document\n---\n\nThis is an analysis of the linear relationship between the height of a daughter and the height of her mother.\n\n# the data \nThe data is in the __Heights__ data in the __alr4__ package.  We load the data below:  \n\n```{r}\n\nrequire( alr4 )     # We need this package for the Heights data.\ndata( Heights )     # Import data.\nhead( Heights )     # Verify data.\ntail( Heights )\n\n```\n # Univariate analysis\n \n ## Histogram\n \n```{r}\n\nrequire( ggplot2 )\n\nggplot( Heights, \n        aes( x=mheight )) +\n    geom_histogram( aes( y=..density.. ),\n                    binwidth=0.5,\n                    color =\"blue\",\n                    fill = \"yellow\" ) +\n    geom_density() + \n    xlab( \"Heights of mothers (inches) \" ) +\n    ylab( \"Density\" ) +\n    ggtitle( \"Mother's heights\" )\n\n```\n\n# Descriptive statistucs\n\n```{r}\nsummary( Heights )\nsd( Heights$mheight )\n```\n# Scatterplot and regression\n\n## SCatterplot\n```{r}\n\nggplot( Heights,\n        aes( x= mheight, y=dheight )) +\n    geom_point() +\n    geom_smooth( method=loess, color=\"red\") +\n    geom_smooth( method=lm  )\n    \no```\n\n",
+    "created" : 1442357049381.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3543508181",
+    "id" : "FFA8B02B",
+    "lastKnownWriteTime" : 1442360973,
+    "path" : "C:/Users/Craig/BSTAT3322/Examples/RMarkdown/test.Rmd",
+    "project_path" : "test.Rmd",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "type" : "r_markdown"
+}

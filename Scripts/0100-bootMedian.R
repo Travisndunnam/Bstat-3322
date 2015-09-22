@@ -1,6 +1,6 @@
-# 0090-Bootstrap mean example
+# 0100-Bootstrap median example
 #
-# We doemonstrate the bootstrapping of the sample mean of the average
+# We demonstrate the bootstrapping of the sample median of 
 # commute time in Atlanta Georgia using the data provided at the
 # LOck5 Wed site: 
 # 
@@ -52,7 +52,7 @@ require( simpleboot )
 
 bootObject <- 
 one.boot( CA$Time,    # The variable of interest
-          mean,       # The desired statistical function
+          median,       # The desired statistical function
           R=1000 )    # Number of replications
           
 ############################################################
@@ -72,14 +72,14 @@ cat( "\nOrginal Sample Mean:        ", bootObject$t0,
      "\nBootstrap Standard error:   ", se )
 
 ############################################################
-# We now check the shape of the boot strap sampling        #
+# We now check the shape of the bootstrap sampling         #
 # to determine the type of confidence intervals we should  #
 # use.                                                     #
 ############################################################
 
 hist( bootObject,
       xlab = "Bootstrap samples", 
-      main = "Commpute Atlanta Bootstrap Sampling distribution")
+      main = "Compute Atlanta \nMedian Bootstrap Sampling distribution")
 
 ###########################################################
 # The bootstrap distribution appears to have a slightly   #
@@ -91,6 +91,18 @@ hist( bootObject,
 
 require( boot )
      
+boot.ci( bootObject,
+         conf =c( 0.90, 0.95, 0.98, 0.99 ),
+         type="all" )
+
+##########################################################
+# Conclusion: The bootstrap sampling distribution is not #
+# a symetric mounded shape distribution. Therefore, we   #
+# should use any of the bootstraped confidence intervals #
+##########################################################
+#
+require( boot )
+
 boot.ci( bootObject,
          conf =c( 0.90, 0.95, 0.98, 0.99 ),
          type="all" )

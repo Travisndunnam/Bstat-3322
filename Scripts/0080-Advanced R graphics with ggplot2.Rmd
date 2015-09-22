@@ -17,7 +17,7 @@ set.seed( 11235813L )
 Before we can draw any of the advanced graphics we will use in this course we must install and load the ggplot2 R-package.  ON my computer the package has been installed so all I need to do is load with either the library command or the require command.  
 
 ```{r,ggplot2}
-require( ggplot2 )                     # Needed for professional quality graphs
+require( ggplot2 )                     # Needed for professional quality
 ```
   
 ## Getting the data
