@@ -17,7 +17,7 @@ rm(list=ls() )
 
 URL <- "http://www.lock5stat.com/datasets/CommuteAtlanta.csv"
 CommuteAtlanta <- read.csv( URL )
-head( commuteAtLANTA )
+head( CommuteAtlanta )
 tail( CommuteAtlanta )
 #
 ###########################################################
@@ -45,7 +45,7 @@ ggplot( CommuteAtlanta,
         aes( x=Sex, y=Time )) +
     geom_boxplot( ) +
     scale_x_discrete(breaks=c("F", "M"),
-                     labels=c("Fenale", "Male")) +
+                     labels=c("Female", "Male")) +
     xlab( "Gender" ) +
     ylab( "Time (minutes)" ) +
     ggtitle( "Commute Atlanta \nCommute Times by Gender" )
@@ -73,7 +73,7 @@ require( simpleboot )                  # Simple bootstrap
 bootOut <- two.boot( Females,          # Bootstarp      
                      Males, 
                      mean, 
-                     R=1000 )
+                     R=2000 )
 
 hist( bootOut )                        # Check sampling distribution
 #
