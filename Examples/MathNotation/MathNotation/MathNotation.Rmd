@@ -1,0 +1,51 @@
+---
+title: "Math Notation"
+author: "by Craig W. Slinkman"
+date: "October 20, 2015"
+output: html_document
+---
+---
+title: "Mathematcal notation"
+author: "by Craig W. Slinkman"
+date: "October 20, 2015"
+output: word_document
+---
+```{r}
+data(mtcars)
+head(mtcars)
+
+require( ggplot2 )
+
+ggplot( mtcars,
+        aes(x=wt,y=mpg)) +
+    geom_point() +
+    geom_smooth( method=lm, se=FALSE ) +
+    geom_smooth( method=loess, 
+                 se=FALSE,
+                 color="red" )
+    
+```
+We need to estimate the following linear regression equation:
+
+$$Y_i=\beta_0+\beta_1 x_i + e_i$$
+
+```{r}
+fit <- lm( mpg~wt, mtcars )
+summary(fit)
+betas <- round( coef(fit),2)
+```
+
+$$\hat{E}(mpg)=`r betas[1]`  + `r betas[2]` wt$$
+
+or we can write this as 
+
+$$\hat{E}(mpg)=`r betas[1]`  `r betas[2]` wt$$
+
+Newton says $F=\frac{GMn}{r^2}$
+
+Eistein says $E=mc^2$.
+
+Pathogoras says $c^2=a^2+b^2$ or $c=\sqrt{a^2+b^2}$.
+
+
+

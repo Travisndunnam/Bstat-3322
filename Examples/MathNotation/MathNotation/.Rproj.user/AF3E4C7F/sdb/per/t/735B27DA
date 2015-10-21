@@ -1,0 +1,18 @@
+{
+    "contents" : "---\ntitle: \"Math Notation\"\nauthor: \"by Craig W. Slinkman\"\ndate: \"October 20, 2015\"\noutput: html_document\n---\n---\ntitle: \"Mathematcal notation\"\nauthor: \"by Craig W. Slinkman\"\ndate: \"October 20, 2015\"\noutput: word_document\n---\n```{r}\ndata(mtcars)\nhead(mtcars)\n\nrequire( ggplot2 )\n\nggplot( mtcars,\n        aes(x=wt,y=mpg)) +\n    geom_point() +\n    geom_smooth( method=lm, se=FALSE ) +\n    geom_smooth( method=loess, \n                 se=FALSE,\n                 color=\"red\" )\n    \n```\nWe need to estimate the following linear regression equation:\n\n$$Y_i=\\beta_0+\\beta_1 x_i + e_i$$\n\n```{r}\nfit <- lm( mpg~wt, mtcars )\nsummary(fit)\nbetas <- round( coef(fit),2)\n```\n\n$$\\hat{E}(mpg)=`r betas[1]`  + `r betas[2]` wt$$\n\nor we can write this as \n\n$$\\hat{E}(mpg)=`r betas[1]`  `r betas[2]` wt$$\n\nNewton says $F=\\frac{GMn}{r^2}$\n\nEistein says $E=mc^2$.\n\nPathogoras says $c^2=a^2+b^2$ or $c=\\sqrt{a^2+b^2}$.\n\n\n\n",
+    "created" : 1445390291420.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3258123610",
+    "id" : "735B27DA",
+    "lastKnownWriteTime" : 1445390605,
+    "path" : "C:/Users/Craig/BSTAT3322/Examples/MathNotation/MathNotation/MathNotation.Rmd",
+    "project_path" : "MathNotation.Rmd",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "type" : "r_markdown"
+}

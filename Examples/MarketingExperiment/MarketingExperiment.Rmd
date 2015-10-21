@@ -1,0 +1,112 @@
+---
+title: "Markekting Experiment"
+author: "by Craig W. Slinkman"
+date: "October 20, 2015"
+output: html_document
+---
+
+---
+title: "Internet Marketing"
+author: "by Craig W. Slinkman"
+date: "October 20, 2015"
+output: word_document
+---
+  
+An intetnet marketing company is runnuning an experment to compaare two different web page deasigns to see which design results in ha high number of sales.  For this anallysis we explanatory variable is design and are designated as Design A and Design "B". 
+
+The experiment worked as follows.  When a consumer went to the web pages home page the computer metaphorically flipped a coin.  If the outcome was a *head* the consumer was sent to the design A web page.  If the metaphorical coin flip was a *tail* the comsumer was sent to web page design B.  
+
+In either case the expriment recored if a sales was made.  
+
+Your job is to analyse the outcome of the experiment.
+
+
+The experiment results in the following results.  
+
+
+```{r echo=FALSE}
+set.seed( 1123 )
+dd <- 5
+na <- rbinom( 1, 10000, 0.5  )
+nb <- 10000 - na
+
+pa <- 0.0500
+pb <- 0.0225
+
+xa <- 258
+xb <- 125
+
+phatA <- round( xa/na, dd )
+phatB <- round( xb/nb, dd )
+dif <- phatA - phatB 
+
+```
+  
+Design | Sample size | Sales   | Proportion  
+-------|-------------|---------| -------------  
+A      | `r na`      | `r xa`  | `r phatA`  
+B      | `r nb`      | `r xb`  | `r phatB`  
+Difference |         |         | `r dif`  
+
+
+# Bootstrap analysis of difference in proportions
+  
+```{r, echo=FALSE}
+
+require( simpleboot )
+
+A <- c( rep( 1, xa ), rep( 0, 5015-xa ))
+B <- c( rep( 1, xb ), rep( 0, 4985-xb ))
+
+reps <- 2000
+
+bootOut <- two.boot( A, B, mean, R=reps  )
+
+pointEstimate  <- bootOut$t0
+bsDistribution <- bootOut$t
+SE             <- sd( bsDistribution )
+
+cat( "\n\nBootstrap estimates",
+     "\nPoint estimate:", round( pointEstimate, dd ),
+     "\nSE:\t\t", round( SE, dd ))
+
+bsMean <- mean( bsDistribution )
+bias   <-  bsMean - pointEstimate
+apctBias <- abs( 100 *  bias / pointEstimate )
+
+cat( "\n\nBootstrap  diagnostics",
+     "\nBootstrap distribution mean:\t", round( bsMean, dd),
+     "\nBootstarp bias:\t\t\t", round( bias, dd),
+     "\nAbsolute Percentage Error\t", round( apctBias,1 ),"%")
+
+```
+
+# Bootstrap sampling distribution histogram
+  
+```{r, echo=FALSE}
+require( ggplot2 )
+
+
+ggplot( data.frame( bootOut$t ),
+        aes( x=bootOut.t )) +
+    geom_histogram( binwidth=0.001,
+                    color="black",
+                    fill="yellow") +
+    xlab( expression( hat(p)[A]-hat(p)[B]) ) +
+    ylab( "Count" ) +
+    ggtitle( "Bootstrap sampling distribution of the \ndifference in proportions")
+
+```
+# Confidence interval
+
+```{r echo=FALSE}
+
+boot.ci( bootOut ,
+         conf=c( 0.90, 0.95, 0.98, 0.99 ),
+         type=c("norm", "bac"))
+
+```
+
+
+
+
