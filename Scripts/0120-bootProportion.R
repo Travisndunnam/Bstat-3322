@@ -29,7 +29,7 @@ CA$Gender <-                     # Add gender to
     ifelse( CA$Sex=="F", 1, 0 )  # data frame.
 #
 head( CA )                       # Comfirm GEnder.
-head( CA )
+tail( CA )
 #
 ##########################################################
 # Always plot raw data.  We will plot a bar-chart of the #
@@ -64,7 +64,7 @@ bootObject <- one.boot(  CA$Gender,
                          R=1000 )
 
 #######################################################
-# Now we priont the bootstrap sample statistics.  The #
+# Now we print the bootstrap sample statistics.   The #
 # smple statistic we are bootstraping is the sample   #
 # proprtion.                                          #
 #######################################################

@@ -1,0 +1,18 @@
+{
+    "contents" : "\nn <- 404678\nphat <- 0.678\ns <- round( n * phat, 0 )\nf <- n - s\nx <- c( rep(1, s), rep(0, f) )\n\nrequire(simpleboot)\n\nbootObject <- one.boot( x,\n                        mean, \n                        R=1000 )\nbootObject\n\nbootObject$t0\nhist( bootObject )\nrequire( boot )\nboot.ci(  bootObject, conf=0.99, type=\"norm\" )\n\n",
+    "created" : 1443129522830.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1411866197",
+    "id" : "183E04A1",
+    "lastKnownWriteTime" : 1443382328,
+    "path" : "C:/Users/Craig/BSTAT3322/Homework/H04/H04-1.R",
+    "project_path" : "H04-1.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

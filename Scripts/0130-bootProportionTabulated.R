@@ -37,7 +37,7 @@ rm( list=ls())     # Clear environment.
 
 phat <- 0.530
 n    <- 1025
-agree <- phat * n
+agree <- round( phat * n, 0 )
 disagree <- n - agree
 
 ###########################################################
