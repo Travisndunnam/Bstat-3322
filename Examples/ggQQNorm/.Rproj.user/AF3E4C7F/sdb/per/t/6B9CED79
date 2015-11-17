@@ -1,0 +1,17 @@
+{
+    "contents" : "# diagnose.r\n\nrequire(ggplot2)\nsource( \"ggQQ.r\")\nsource( \"multiplot.r\" )\n\ndiagnose <-  \n    function( y )\n{\n        DF <- data.frame( y )\n        \n        p1 <- ggplot( DF,\n                      aes( x=y)) +\n            geom_histogram( \n                aes( y =..density..),\n                color=\"black\",\n                fill=\"white\" ) +\n            geom_density( color= \"red\" ) +\n            xlab( \"Variable\")\n        p2 <- ggQQ( y )\n        \n        multiplot( p1, p2, cols=2)\n}",
+    "created" : 1447789485350.000,
+    "dirty" : false,
+    "encoding" : "ISO8859-1",
+    "folds" : "",
+    "hash" : "150650999",
+    "id" : "6B9CED79",
+    "lastKnownWriteTime" : 1447789604,
+    "path" : "C:/Users/Craig/BSTAT3322/Examples/ggQQNorm/diagnose.R",
+    "project_path" : "diagnose.R",
+    "properties" : {
+    },
+    "relative_order" : 3,
+    "source_on_save" : true,
+    "type" : "r_source"
+}

@@ -1,0 +1,17 @@
+{
+    "contents" : "# ggQQ.r\n#\n###########################################################\n# Normal Quantile-Quantile Plot.                          #\n###########################################################\n# This function creates a normal quantile plot of a       #\n# bumer eric R vector.  It returns a ggplot2 gtaphics     #\n# object.                                                 #\n###########################################################\n#\n\nggQQ <- function( y )\n{\n    zs <-   qqnorm( y, plot.it=FALSE )\n    z <-   zs$x\n    y <-   zs$y\n    \n    ZY <- data.frame( z, y ) \n    \n    m <- diff( quantile( y, c(0.25,0.75))) /\n         diff( quantile( z, c(0.25,0.75)))\n    b <- y[1L] - m * z[1L]\n    \n    p <- ggplot( ZY, \n                 aes( x=z, y=y)) +\n            geom_point() +\n            geom_abline( intercept=b,\n                         slope=m,\n                         color=\"red\" ) +\n        xlab( \"Standard Normal Qunatiles\" ) +\n        ylab( \"Sample Quantiles\" ) +\n        ggtitle( \"Normal Quantile Plot\") +\n        theme_bw()\n    p\n}",
+    "created" : 1447788933205.000,
+    "dirty" : false,
+    "encoding" : "ISO8859-1",
+    "folds" : "",
+    "hash" : "4192172026",
+    "id" : "4D1F3522",
+    "lastKnownWriteTime" : 1447705225,
+    "path" : "C:/Users/Craig/BSTAT3322/Examples/ggQQNorm/ggQQ.r",
+    "project_path" : "ggQQ.r",
+    "properties" : {
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "type" : "r_source"
+}
