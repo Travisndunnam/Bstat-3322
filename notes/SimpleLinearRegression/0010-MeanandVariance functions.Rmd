@@ -1,0 +1,130 @@
+---
+title: "0010-Mean and variance Functions"
+author: "by Craig W. Slinkman"
+date: "November 24, 2015"
+output: html_document
+---
+
+# The mean function
+Functions Imagine a generic summary plot of Y versus X. Our interest centers on how the distribution of Y changes as X is varied. One important aspect of this distribution is the mean function, which we define by  
+
+$E(Y|X=x)=$ a function that depends upon the value of x
+
+We read the left side of this equation as "the expected value of the response when the predictor is fixed at the value X = x".
+
+Consider the Mother-Daguter heighst data plotted below. we might believe that a linear function descibes how the expected value of the daughter's height varys with the height of her mother.  If this is true then the function form of the function is given by
+
+$$E(Y|X=x)= \beta_0 + \beta_1 x$$
+
+```{r}
+rm( list=ls())              # Clear environment.
+require(alr4)               # Needed for Heights data.
+data(Heights)               # Mother daughter heights data.
+#
+require( ggplot2 )          # Needed forr graphics grammar plots.
+#
+ggplot( Heights,            # Draw catterplot.
+        aes( x=mheight,
+             y=dheight)) +
+    geom_point() +
+    xlab( "Mother's height (inches)") +
+    ylab( "Daughter's height (inches)") +
+    ggtitle( "Mother-Daughters Heights" )
+    
+
+```
+  
+If this is true then the function form of the function is given by
+
+$$E(Y|X=x)= \beta_0 + \beta_1 x$$
+
+The right side of the above equation depends on the problem. For example, in the heights data in Example 1.1, we might believe that the functional form is linear,  that is, the mean function is a straight line. This particular mean function has two parameters, an intercept $\beta_0 $ and a slope $\beta_1$.  
+
+This particular mean function has two parameters, an intercept $\beta_0$ and a slope $\beta_1$. If we knew the values of the $\beta$s.  then the mean function would be completely specified, but usually the $\beta$s need to be estimated from data.
+
+Because there are an infinite number of bossible values for $\beta$s
+there are infinite number of possible alines.  Two such lines are shown below.
+
+```{r}
+fit <- lm( dheight ~ mheight, data=Heights )
+betas <- fit$coefficients
+
+intercept <- with( Heights, mean(dheight) - mean(mheight))
+slope = 1
+
+ggplot( Heights,            # Draw catterplot.
+        aes( x=mheight,
+             y=dheight)) +
+    geom_point( alpha=0.5) +
+    geom_smooth( method=lm,
+                 se=FALSE,
+                 color="red") +
+    geom_abline( intercept=intercept, 
+                 slope=1,
+                 color="blue",
+                 linetype=2) +
+    annotate( "text", x=55, y=71, 
+              label = "E(Y|X=x)=1.30+1.0x",
+              color="blue",
+              hjust=0) +
+    annotate( "text", x=55, y=69, 
+              label = "E(Y|X=x)=29.9+0.54x",
+              color="red",
+              hjust=0) +
+    annotate( "text", x=55, y=71, 
+              label = "E(Y|X=x)=1.30+1.00x",
+              color="blue",
+              hjust=0) +
+    xlab( "Mother's height (inches)") +
+    ylab( "Daughter's height (inches)") +
+    ggtitle( "Two possible regression functions" )
+```
+
+The above shows two possibilities for the $\betas$s in the straight-line mean function for the heights data. For the dashed line, $\beta_0=1.29$ and $\beta_1=1$. This mean function would suggest that daughters have the same height as their mothers on the average for mothers of any height. The second line is estimated using ordinary least squares, or OLS, the estimation method that will be described in the next chapter. The OLS line has slope less than 1, meaning that tall mothers tend to have daughters who are taller than average because the slope is positive, but shorter than themselves because the slope is less than 1. Similarly, short mothers tend to have short daughters but taller than themselves. This is perhaps a surprising result and is the origin of the term regression, since extreme values in one generation tend to revert or regress toward the population mean in the next generation. 
+
+# The variance function
+Another characteristic of the distribution of the response given the predictor is the variance function, defined by the symbol Var( Y | X = x) and in words as the variance of the response given that the predictor is fixed at X = x. For example, in $Heights$ we can see that the variance function for dheight | mheight is approximately the same for each of the three values of mheight shown in the graph.
+
+UNfortuanrly this is not alwats true.  For example, consider the data stroed in the $cvs$ file.  IN this case we are attmepting to pteodct the value of enchnated lakes real estate as the function of the size of the house measured in square feet.
+
+```{r}
+rm( list=ls() )              # Clear environment.
+ELS <- 
+    read.csv( "Enchanted Lakes Estates.csv" )
+
+require( ggplot2 )
+
+ggplot( ELS,
+        aes( x=sqft,
+             y=price)) +
+    geom_point( alpha=0.5 ) +
+    geom_smooth( method=lm,
+                 se=FALSE,
+                color="red" ) +
+    geom_smooth( method=loess,
+                 se=FALSE,
+                 color="blue",
+                 linetype=2 ) +
+    annotate( "text", x=1000, y=800,
+              label="LOESS smooth",
+              color="blue",
+              hjust=0,
+                  linetype=2 ) +
+    annotate( "text", x=1000, y=700,
+              label="OLS smooth",
+              hjust=0,
+              color="red" ) +
+    xlab( "Square Feet" ) +
+    ylab( "Price ($100k)" ) +
+    ggtitle( "Enchanted Lakes Real Estate (October 2014)")
+
+
+```
+
+For the above scatterplot we see  
+
+* There is one obvious outlier in the data.  We would need to investigate why this proprty has a high value while having the lowest square feet in the neighboorhood.  
+
+* A linear model is not appropriate.  
+
+* As the predictor variable square feet increase the spread of the data in creases.  In other words, the variance is not constatnt. T

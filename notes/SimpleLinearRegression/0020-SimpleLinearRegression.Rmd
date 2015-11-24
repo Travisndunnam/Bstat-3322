@@ -1,0 +1,120 @@
+---
+title: "0020-Simple Linear Regression"
+author: "by Craig W. Slinkman"
+date: "November 24, 2015"
+output: html_document
+---
+
+The simple linear regression model consists of the mean function and the variance function:
+
+$E(Y|X=x) = \beta_0 + \beta_1 x$  
+$Var(Y|X=x) = \sigma^2$
+
+In otherwords we have  
+
+*The mean value of Y is a linear function of x.  
+
+*The variance of Y is constant.
+
+The mathermatical symbols are $\beta_0$, $\beta_1$, and $\signa^2$ are unklnown population parameters and must be estimated from the data.
+
+# Graph of a population model
+A hypothetical population model is shown below.
+
+
+```{r}
+rm( list=ls())
+X <- -2:10
+Y <- 5.0 + 0.5 * X
+DF <- data.frame( X, Y )
+
+require( ggplot2 )
+ggplot( DF,
+        aes( x=X, y=Y)) + 
+    geom_smooth( method=lm,
+                    color="red" ) +
+    annotate( "text",
+               x=0+0.20, y=5+0.50,
+               label="beta[0]",
+              parse=TRUE,
+              hjust=0,
+              vjust=0) +
+    annotate( "segment",
+               x=-2.5, xend=0,
+               y=5, yend=5,
+              linetype=3) +
+    annotate( "segment",
+              x=0, xend=0,
+              y=0, yend=10 ) +
+    annotate( "segment",
+              x=-2, xend=10,
+              y=0, yend=0) +
+    annotate( "segment",
+              x=4, xend=5,
+              y = 7, yend=7) +
+    annotate( "segment",
+              x=5, xend=5,
+              y=7, yend=7.5 ) +
+    annotate( "text",
+              x=4.5, y=7-0.5,
+              label="beta[1]",
+              parse=TRUE) +
+    annotate( "text",
+              x=2, y=9,
+              label="E(Y|X=x)=5 +0.25x",
+              color="red",
+              hjust=0 ) +
+    ggtitle( "Population regression model" )
+```
+
+Because the variance $\sigma^2>0$, the observed value of the ith response $y_i$ will typically not equal its expected value $E(Y|X=x_i)$. To account for this difference between the observed data and the expected value, statisticians have invented a quantity called a statistical error, or $e_i$, for case i defined implicitly by the equation
+
+$$y_i=E(Y|X=x_i) + e_i$$
+
+or explicitly by
+
+$$e_i=y_i-E(Y|X=x_1)$$
+
+To isslustare this point we will draw a random saample of 10 observations from the $Heights$ data and show the fitted (fitted means esttimated )regression line and show all the errors.  We are assuming we are delaing with population data here.  In realitiy we will use etimated esrrors which are called _residuals_.  
+
+```{r}
+rm( list=ls())
+require( alr4 )
+data(Heights)
+fit <- lm( dheight ~ mheight, data=Heights)
+betas <- coef( fit )
+
+set.seed( 11235 )
+i <- sample.int( dim(Heights)[1], 10, replace=FALSE )
+Heights$error  <- residuals(fit)
+Heights$fit    <-  fit$fitted.values
+
+Heights <- Heights[i, ]
+i <- sample.int( dim(Heights)[1], 10, replace=FALSE )
+
+require( ggplot2 )
+
+p <-
+    ggplot( Heights,
+        aes(x=mheight, y=dheight))  +
+        geom_point() +
+    geom_abline( intercept = betas[1], 
+                 slope = betas,
+                 color="red")
+for( i in 1:10 )
+{
+    p <- p +
+        annotate( "segment",
+                  x=Heights$mheight[i],
+                  xend=Heights$mheight[i],
+                  y=Heights$fit[i],
+                  yend=Heights$dheight[i],
+                  color="blue")
+}
+
+p + ggtitle( "Random Error Terms" )  
+    
+```
+
+
+Weisberg, Sanford (2013-11-25). Applied Linear Regression (Wiley Series in Probability and Statistics) (Kindle Locations 727-731). Wiley. Kindle Edition. 
