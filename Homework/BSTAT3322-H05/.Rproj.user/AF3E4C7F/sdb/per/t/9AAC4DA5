@@ -1,0 +1,18 @@
+{
+    "contents" : "# randomization.r\n#\n# This function computes the randomization distribution for a completely\n# randomized experimental design with a single treatment with two levels.  \n# # The function returns a vector consisiting of the values of the \n# randomization distribution.  \n#\n# The argument of this distribution are:\n#\n# y1 - values of the experimental response variable for treatment level 1.\n# y2 - values of the experimental response variable for treatment level 2.\n# reps - the number of replications in the randomization distribution. This\n#        has a default value of 10,000.\n\nrandomization <-\n    function( Response1, Response2, reps=10000 ){\n        n1 <- length( Response1 )\n        n2 <- length( Response2 )\n        \n        n <- n1 + n2\n        \n        Response <- c( Response1, Response2 )\n        meanDif  <- rep( NA, reps )\n        \n        for( i in 1:reps ){\n            j <- sample.int( n, size=n1, replace=FALSE )\n            y1 <- Response[j]\n            y2 <- Response[-j]\n            meanDif[i] <- mean(y1) - mean(y2)\n        }\n        \n        meanDif\n    }\n       \n       \n",
+    "created" : 1446509939875.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3517069483",
+    "id" : "9AAC4DA5",
+    "lastKnownWriteTime" : 1446524268,
+    "path" : "C:/Users/Craig/BSTAT3322/Homework/BSTAT3322-H05/randomization.R",
+    "project_path" : "randomization.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 3,
+    "source_on_save" : true,
+    "type" : "r_source"
+}

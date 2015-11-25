@@ -1,0 +1,27 @@
+---
+title: 'BSTAT 3322: Homework 5'
+author: "by Craig W. Slinkman"
+date: "November 2, 2015"
+output: html_document
+---
+
+This homework covers the topic of using randomization distributions to test completely randomized experimental designs.  Because we randomly assign treatments to our experimental objects we must use the same method to create our randomization distribution.
+
+# Gasilone addtives 
+A manufacturer of petrol-chemicals has developed a new gasoline additive that the manufacture claims will improve a cars mile per gallon.  They have run the experiment. They ask you to test if the claim is true.  Because consumer protection agencies are increasingly aggressive they  to more proof substantiating the claim and want to use a 1% level of significance.
+
+## Obtaining the experimental data
+To obtain the experimental data you must load the $R-script$ named $GasAdditiveExperiment.R$ into _RStudio_ and run the script.  The script will write the experimental data file to this directory.
+
+## Loading the data.
+Read in the data into _R_Studio_ using the $R-function$ $read.csv()$.  Then display the contents of the data frame.
+
+```{r Q1}
+
+ GAE <- read.csv( "GAE.csv")
+ GAE
+```
+
+
+
+# Wep page design experiment

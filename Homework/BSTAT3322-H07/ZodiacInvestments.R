@@ -1,0 +1,7 @@
+rm( list=ls())
+n <- round( runif( 1, 20, 100 ))
+marketReturn <- runif( n, 0, 0.009 )
+predictedReturn <- runif( n, 0, 0.01 )
+ZodiacInvestments <- data.frame( marketReturn, predictedReturn )
+write.csv( ZodiacInvestments, file="ZodiacInvestments.csv" )
+rm( list=ls())

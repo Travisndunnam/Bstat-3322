@@ -1,5 +1,5 @@
 ---
-title: "Assessing normality with norma Quantile-Quantile  plots"
+title: "Assessing normality with normal quantile-quantile plots"
 author: "by Craig W. Slinkman"
 date: "November 15, 2015"
 output: word_document
@@ -20,7 +20,7 @@ A QQ plot is generally a more powerful approach to do this than the common techn
 
 ## Symetric distributions (https://en.wikipedia.org/wiki/Kurtosis)
 
-In probability theory and statistics, kurtosis (from Greek: ????????????, kyrtos or kurtos, meaning "curved, arching") is a measure of the "tailedness" of the probability distribution of a real-valued random variable. In a similar way to the concept of skewness, kurtosis is a descriptor of the shape of a probability distribution and, just as for skewness, there are different ways of quantifying it for a theoretical distribution and corresponding ways of estimating it from a sample from a population. There are various interpretations of kurtosis, and of how particular measures should be interpreted; these are primarily tail weight, peakedness (width of peak), and lack of shoulders (distribution primarily peak and tails, not in between).
+In probability theory and statistics, kurtosis (from Greek: kyrtos or kurtos, meaning "curved, arching") is a measure of the "tailedness" of the probability distribution of a real-valued random variable. In a similar way to the concept of skewness, kurtosis is a descriptor of the shape of a probability distribution and, just as for skewness, there are different ways of quantifying it for a theoretical distribution and corresponding ways of estimating it from a sample from a population. There are various interpretations of kurtosis, and of how particular measures should be interpreted; these are primarily tail weight, peakedness (width of peak), and lack of shoulders (distribution primarily peak and tails, not in between).
 
 The standard measure of kurtosis, originating with Karl Pearson, is based on a scaled version of the fourth moment of the data or population. This number measures heavy tails, and not peakedness;hence, the "peakedness" definition is misleading. For this measure, higher kurtosis means more of the variance is the result of infrequent extreme deviations, as opposed to frequent modestly sized deviations.
 
@@ -81,7 +81,8 @@ p2 <-
     ggtitle( "Example: Platykurtic Distribution: \nContinuous UNiform Distribution" )
 
 p3 <- ggQQ( x )    
-    
+
+source("multiplot.r")
 multiplot( p1, p2, p3, cols=2)
    
 ```
@@ -304,6 +305,7 @@ The following data set is the sales of Texas Powerball Lottery Tickes per lotter
 
 ```{r}
 rm( list=ls())
+source("diagnose.r")
 
 TPS <- read.csv( "TexasPoweball20132014X.csv" )
 head( TPS )
@@ -366,10 +368,15 @@ Master[Master$playerID == playerID, 14:15 ]
 
 ``` 
 
+## Financial modeling
+We can use R-package $quantmod$ to obtain finical data from the New York Stock Exchange.  
 
+```{r}
 
+rm(list=ls())
+require( quantmod(WMT) )
 
-
-
-
-
+getSymbols( Symbols="WMT" )
+price <- log( WMT$WMT.Close)
+returns <- lag( price, 1 )
+returns <- as.vector( price )

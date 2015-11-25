@@ -460,7 +460,7 @@ Because the p-value=`r pValue` is less than 0.0500.  There is relatively strong 
 ## Subject matter conclusion
 There is relatively strong evidence that Mr. Carson will win the Iowa Caucus if the Caucus is held on the same day as the survey.  
 
-# Cocaine addition
+# Cocaine addiction
 In the statistical theory of design of experiments, randomization involves randomly allocating the experimental units across the treatment groups. For example, if an experiment compares a new drug against a standard drug, then the patients should be allocated to either the new drug or to the standard drug control using randomization.  
 
 We are going to analyze two analyze the following healthcare problem:
@@ -509,25 +509,25 @@ $$\hat{p}_D - \hat{p}_L=`r round(pD,3)`-`r round(pL,3)`=$$
   
 ## Hypothesis set
 Our research hypothesis of interest is that using Desipramine will have a lower relapse proportion than patients who receive Lithium.  Our hypothesis set is:
-$$NH: p_D=pL$$
-$$AH: pD>pL$$  
+$$NH: p_D=p_L$$
+$$AH: pD>p_L$$  
 
 Equivalently we can rewrite the above hypothesis set as
 
-$$NH: p_D-pL=0$$
-$$NH: pD-pL >0$$  
+$$NH: p_D-p_L=0$$
+$$NH: pD-p_L >0$$  
 
 ## Creating the randomization distribution
 Because in experiments treatments are randomized to experimental subjects our reference distribution should be created in the same way.  We can do this by using the R-function $sample.int$$.  WE will show how to do this below for a single randomization sample.  
 
-```{r Q5.2,echo+ECHO}
+```{r Q5.2,echo=TRUE}
 #
 ###########################################################
 # We need to change the strings to numeric o's and 1's so #
 # we can use the mean function to compute proportions.    #
 ###########################################################
 #
-y <- ifelse(CT$Relapse[1:48]=="yes", 0, 1 )
+y <- ifelse(CT$Relapse[1:48]=="yes",1, 0 )
 #
 #
 ###########################################################
@@ -561,7 +561,8 @@ y[L]
 # randomized groups.                                     #
 ##########################################################
 #
-pDif <- mean(y[D]) - mean( y[L])
+dif <- mean(y[D]) - mean( y[L])
+dif
 
 ```
 In practice we need to do this a large number of times.  The code below will create randomization distribution with 20,000 replcations using the drug data.  
@@ -570,7 +571,7 @@ In practice we need to do this a large number of times.  The code below will cre
 reps <- 20000
 rd   <- rep( NA, reps)
 
-outcome <- ifelse(CT$Relapse[1:48]=="yes", 0, 1 )
+outcome <- ifelse(CT$Relapse[1:48]=="yes", 1, 0 )
 trials   <- 1:48
 
 for( i in 1:reps){
@@ -607,7 +608,44 @@ pValue <- round( length( rd[rd >= pDif] ) / reps, 4 )
 $$p-value=`r pValue`$$
 
 ## Statistical conclusion
-Necause the p-value of `r pValue` is much higher than 5% we can't conclude that the bull hypothesis is incorrect.  
+because the p-value of `r pValue` is much smaller than 0.0500 we conclude that the bull hypothesis is incorrect.  
 
 ## Clinical conclusion 
-There is insufficient sample evidence to conclude that Desipramine reduces relabses more than Lithium.
+There is very strong sample evidence to conclude that Desipramine reduces relapses more than Lithium.
+
+# Using a confidence interval to test a hypotheis
+Suppose a craft brewer brews a beer called Winter Warmer.  The beer should have an alcholoic content of 11%.  A random sample of size 15 is drawn from 10 random retail outlets and the alcololic content by volume, $ABV$ is measured.  
+
+The sample data is given below.
+
+```{r Bewer,echo=FALSE}
+rm( list=ls())
+set.seed( 31853211 )
+ABV <- round( rnorm( 10, 11.5, 0.3) ,1 )
+ABV
+  
+```
+Test the null hypothesis at the 5% kevel of significance by using a 95% confidence interval.  Use the bootstrap to perform the computations.
+
+```{r echo=TRUE}
+require( simpleboot )
+
+reps <- 10000
+
+bootOut <- one.boot( ABV,
+                      reps )
+bsd <- bootOut$t
+
+
+cat( "Bootstrap diagnostics" )
+```
+
+
+
+
+## The null and the alternative hypotheses 
+Because we do not apriori know if the ABV is higher or lower we use a two-tailed hypothesis test.  
+
+$$NH: \mu=11$$
+$$AH: \mu \ne 11$$
+

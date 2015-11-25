@@ -10,13 +10,13 @@ The simple linear regression model consists of the mean function and the varianc
 $E(Y|X=x) = \beta_0 + \beta_1 x$  
 $Var(Y|X=x) = \sigma^2$
 
-In otherwords we have  
+In other words we have  
 
 *The mean value of Y is a linear function of x.  
 
 *The variance of Y is constant.
 
-The mathermatical symbols are $\beta_0$, $\beta_1$, and $\signa^2$ are unklnown population parameters and must be estimated from the data.
+The mathematical symbols are $\beta_0$, $\beta_1$, and $\signa^2$ are unknown population parameters and must be estimated from the data.
 
 # Graph of a population model
 A hypothetical population model is shown below.
@@ -75,7 +75,7 @@ or explicitly by
 
 $$e_i=y_i-E(Y|X=x_1)$$
 
-To isslustare this point we will draw a random saample of 10 observations from the $Heights$ data and show the fitted (fitted means esttimated )regression line and show all the errors.  We are assuming we are delaing with population data here.  In realitiy we will use etimated esrrors which are called _residuals_.  
+To illustrate this point we will draw a random sample of 10 observations from the $Heights$ data and show the fitted (fitted means estimated )regression line and show all the errors.  We are assuming we are dealing with population data here.  In reality we will use estimated errors which are called _residuals_.  
 
 ```{r}
 rm( list=ls())
@@ -99,7 +99,7 @@ p <-
         aes(x=mheight, y=dheight))  +
         geom_point() +
     geom_abline( intercept = betas[1], 
-                 slope = betas,
+                 slope = betas[2],
                  color="red")
 for( i in 1:10 )
 {
@@ -116,5 +116,18 @@ p + ggtitle( "Random Error Terms" )
     
 ```
 
+The errors $e_i$ depend on unknown parameters in the mean function and so are not observable quantities. They are random variables and correspond to the vertical distance between the point $y_i$ and the mean function $E(Y|X=x_i)$. In the Heights data, the errors are the differences between the heights of particular daughters and the average height of all daughters with mothers of a given fixed height.  
 
-Weisberg, Sanford (2013-11-25). Applied Linear Regression (Wiley Series in Probability and Statistics) (Kindle Locations 727-731). Wiley. Kindle Edition. 
+# Assumptions about the error terms $e_i$
+In order to determine how we can estimate the parameters we must make certain assumptions about the error terms $e_i$.  
+
+We make two important assumptions concerning the errors. First, we assume that $E( E_i|X=x_i)=0$, so if we could draw a scatterplot of the $e_i$ versus the $x_i$, we would have a null scatterplot, with no patterns. 
+
+The second assumption is that the errors are all independent, meaning that the value of the error for one case gives no information about the value of the error for another case. This is likely to be true in the examples in this class , although this assumption will not hold in all problems.
+
+Errors are often assumed to be normally distributed, but normality is much stronger than we need. In this book, the normality assumption is used primarily to obtain tests and confidence statements with small samples where $n \le 30$. If the errors are thought to follow some different distribution, such as the Poisson or the binomial, other methods besides $OLS$ may be more appropriate.
+
+
+
+
+

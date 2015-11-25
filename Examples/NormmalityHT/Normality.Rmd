@@ -1,0 +1,16 @@
+---
+title: "Assessing normality"
+author: "by Craig W. Slinkman"
+date: "November 9, 2015"
+output: word_document
+---
+
+In this document we will discuss methods to assess the normality of a distribution of data sample.  We will discuss both graphical and hypothesis testing methods and then give guidlines when each should be use.
+
+# Quantiles
+Quantiles are cutpoints dividing a set of observations into equal sized groups. There are one fewer quantiles than the number of groups created. Thus quartiles are the 3 cut points that will divide a dataset into four equal-size groups.  
+
+For exanple suppose we we have a set of 100 normal random variables where $Y$ is a random variable from a normal distribution with mean $\mu$ and standard deviatiom $\sigma$.  We write this in short form as:  
+
+$$y \sim N( \mu , \sigma )$$
+

@@ -1,0 +1,6 @@
+---
+title: "BSTAT3322 Homework 5`
+author: "by Craig W. Slinkman"
+date: "November 2, 2015"
+output: word_document
+---
