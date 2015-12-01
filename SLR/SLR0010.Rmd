@@ -1,0 +1,297 @@
+---
+title: "Simple Linear Regression"
+author: "by Craig W. Slinkman"
+date: "December 1, 2015"
+output: html_document
+---
+# Simple Linear Regression
+Simple linear regression is a technique in parametric statistics that is commonly used for analyzing mean response of a variable Y which changes according to the magnitude of an predictor variable X.
+
+## Examples
+We resent three examples that we use through out these notes.  The background story for each of the data sets will follow.  
+
+1. The first example will be Singfat Chu's example of the pricing of "starter" diamond rings. 
+
+2. The second example is the tipping behavior at a bistro.  
+
+3.  The third example is attempting to predict students grades on the final exam as a function of their grade on the first exam.
+
+## Singapore diamond ring data
+The source of the data is a full page advertisement placed in the Straits Times newspaper issue of February 29, 1992, by a Singapore-based retailer of diamond jewelry.  
+
+The advertisement contained pictures of diamond rings and listed their prices, diamond content, and gold purity. Only 20K ladies' rings, each mounted with a single diamond stone, were considered for this study. 20K rings are made with gold of 20 carat purity. (Pure gold is rated as 24K.)  
+
+There were 48 such rings of varying designs. The weights of the diamond stones ranged from 0.12 to 0.35 carats (a one carat diamond stone weighs 0.2 gram) and were priced between $223 and $1086. The jewelry store adopted a fixed-price policy.  
+
+## The pricing of diamond rings
+In Singapore, the pricing of gold jewelry is simple. The price equals the current market value of the gold content (i.e., weight times the going rate per gram of gold) plus a craftsmanship fee.  
+
+However, the pricing of other jewelry like diamond rings is more complicated because they are not as standardized as gold jewelry. The price of diamond jewelry depends on the four C's: caratage, cut, color, and clarity of the diamond stone. A good cut gives a diamond more sparkle. Colorless diamonds are the most prized. A flawless diamond has maximum clarity because the passage of light is unimpeded through the stone. Cut, color, and clarity are subjective factors and are very hard for the layman to gauge.
+
+## Obtaining the data
+We can read the data set directly from the web location using the following R-script.  
+
+```{r getRings}
+RINGS <- "http://www.amstat.org/publications/jse/datasets/diamond.dat.txt"
+Rings <- 
+    read.table( RINGS, header=FALSE )
+colnames( Rings ) <- c( "Carats", "Price" )
+
+head( Rings )
+tail( Rings )
+```
+
+In this example we are predicting the _Price_.  Therefore, the response variable is the weight of the diamond.  The weight of the diamond is _Carats_.  A scatterplot of _Price_ versus _Carats_ is shown below.  It appears that over the _Carats_ the _Price_ appears to change in a linear manner.  
+
+```{r scatterRings}
+
+require( ggplot2 )
+
+ggplot( Rings,
+        aes( x=Carats, y=Price)) +
+    geom_jitter( ) +
+    geom_smooth( method=lm, 
+                 se=FALSE ) +
+    geom_smooth( method=loess,
+                 se=FALSE,
+                 color="red") +
+    annotate( "text", 
+              x=0.15, y=900,
+              label="OLS Line",
+              hjust=0,
+              size=3,
+              color="blue") +
+    annotate( "text", 
+              x=0.15, y=825,
+              label="LOESS Line",
+              hjust=0,
+              size=3,
+              color="Red") +
+    xlab( "Carats" ) +
+    ylab( "Price (Singapore Dollars)" ) +
+    ggtitle( "Singapore Strater Diamond Rings"  ) +
+    theme_bw()
+
+```
+  
+ It appears that the relationship is linear because the blue OLS line and the red LOESS line are almost coincident.  Further, we can see that this is a very strong relationship because the data points are very close to the fitted OLS line.
+ 
+### Fitting the linerar model
+We fit OLS models using the R-function $lm$.  We use this function to estimate the intercept and slope estimates of the simple linear regression.  We demonstrate this below.
+
+```{r fitPrice}
+slrRings <- lm( Price ~ Carats,
+                data=Rings)
+summary( slrRings )
+
+```
+
+The estimated regression model is
+$$\hat{E}(Price|X=Carats) = -259.63 + 372102.02 Carats  $$
+
+Given that the _Pice_ variable is relatively large compared to decimal parts of the regression we can rewrite the above equation as
+
+$$\hat{E}(Price|X=Carats) = -260 + 3721Carats$$  
+
+If we want to stay with our $x$ and $y$ notation we can write the above equation as
+
+$$\hat{y}=-260+3721x$$
+
+Note that $\hat{E}(Price|X=Carats)$ and $\hat{y}$ are called the fitted values by some statisticians.  Others call these values the predicted values.  I tend to use both of these terms.  
+
+### Interpretation of the estimated regression coefficients
+You always must be very careful on interpreting the meaning of the regression coefficients.  This is particularly true of the intercept coefficient $\hat{\beta}_0$.
+
+#### Interpretation of $\hat{\beta}_0$
+Look at the scatterplot of _Price_ versus _Carats_.  Notice that there are no values of _Carat_ that have a value of zero or are negative.  That is the intercept value is outside the range of the predictor variable _Carats_.  When this occurs __we cannot give an economic interpretation of the inrtercept coefficient__. 
+
+Hence for this dataset no interpretation is possible for this data set.  
+
+### The interpretation of the slope coefficient $\hat{\beta}_1$ 
+
+The estimated slope coefficient $\hat{\beta}_1$ is the estimated  change in the response variable per unit change  in the predictor variable.  Thus our interpretation of the estimated slope coefficient is that we estimate on average that the value of a diamond ring increases by $3721 per _Carat_ increase.  
+
+Note that the range of data is much less than one carat.  We easily see this from the scatterplot.  It is more reasonable and easier to understand if we take an 0.01 carat increment.  Our interpretation then becomes that we estimated the mean value of the diamond ring changes by approximately $36 per 0.01 carat increase. 
+
+### Fitted values and residuals
+The y-hat $\hat{y}$ is the symbol that represents the predicted values for the OLS line of best fit in linear regression. The equation for the fitted values is
+ $$\hat{y}=\hat{\beta}_0 + \hat{\beta}_1 x$$  
+ 
+ To obtain the fitted values with R we use the R-function fitted.  We obtain the fitted values below.
+ 
+### Residuals
+The residuals are difference between the response variable and the fitted value for all obsevations in the data set.  Writing this as an equation we have
+$$\hat{e}=y_i - \hat{y}_i~~~~~i=1,...,n$$
+
+Note the $^$ over the $e$.  What does this mean.  Recall that the basic linear regression model is 
+$$y_i=\beta_0 + \beta_1x_i+e_i$$
+
+The $e_i$ are the unobservable error terms.  The residuals are the estimated error terms for your data set.  Since they are estimated we use $^$ to signify that we are estimating them.  
+
+### Properties of residuals
+The sum of the residuals is always equal to zero.  That is
+$$\Sigma_{i=1}^2 \hat{e}_i=0$$
+
+This inples that the average of the residuals in the sample will be equal to zero,
+ 
+```{r fittedPrice}
+priceHat <- fitted( slrRings )
+head( priceHat )
+```
+
+## Restaurant tips
+
+### Description
+The owner of a bistro called First Crush in Potsdam, NY was interested in studying the tipping patterns of his customers. He collected restaurant bills over a two week period that he believes provide a good sample of his customers. The data recorded from 157 bills include the amount of the bill, size of the tip, percentage tip, number of customers in the group, whether or not a credit card was used, day of the week, and a coded identity of the server.  
+
+## The data set
+
+A dataset with 157 observations on the following 7 variables.
+
+Bill - Size of the bill (in dollars)  
+Tip - Size of the tip (in dollars)
+Credit -Paid with a credit card? n or y
+Guests - Number of people in the group
+Day	 Day of the week: m=Monday, t=Tuesday,  th=Thursday, or f=Friday
+Server - Code for waiter/waitress: A, B, or C
+PctTip	- Tip as a percentage of the bill
+  
+Our initial objective is to is to predict the amount of the tip based only on the amount of the bill.  
+
+The data is in the __Lock5Data__ package.  We load the data and data as follows.  
+
+```{r getTips}
+
+require( Lock5Data )
+data( RestaurantTips )
+head( RestaurantTips )
+tail( RestaurantTips )
+```
+
+We now draw the scatterplot using _Bill_ as the predictor variable and _Tip_ as the response variable.
+
+```{r scatterTips}
+
+ggplot( RestaurantTips,
+        aes( x=Bill, y=Tip )) +
+    geom_jitter( ) +
+    geom_smooth( method=lm, 
+                 se=FALSE ) +
+    geom_smooth( method=loess,
+                 se=FALSE,
+                 color="red") +
+    annotate( "text", 
+              x=5, y=10,
+              label="OLS Line",
+              hjust=0,
+              size=3,
+              color="blue") +
+    annotate( "text", 
+              x=5, y=9,
+              label="LOESS Line",
+              hjust=0,
+              size=3,
+              color="Red") +
+    xlab( "Bill ($)" ) +
+    ylab( "Tip ($)" ) +
+    ggtitle( "Tips at the Bristro"  ) +
+    theme_bw()
+
+```
+  
+We see from the scatterplot that a linear relationship appears to be appropriate.  In addition, we see that the variance of the data increases as the bill increase so the variance is not constant.  For now though we will pretend that the variance is constant. 
+
+### Fitting the linerar model
+We fit OLS models using the R-function $lm$.  We use this function to estimate the intercept and slope estimates of the simple linear regression.  We demonstrate this below.
+
+```{r FtTips}
+
+slrTips <- 
+    lm( Tip ~ Bill,
+        data=RestaurantTips )
+summary( slrTips )
+```
+
+Our estimated or fitted model is
+
+$$E(TIP|X=Bill)=`r round( coef(slrTips)[1],2)` + `r round( coef(slrTips)[2],2)`x$$
+
+### Interpretation of the estimated regression coefficients
+You always must be very careful on interpreting the meaning of the regression coefficients.  This is particularly true of the intercept coefficient $\hat{\beta}_0$.
+
+#### Interpretation of $\hat{\beta}_0$
+We see that there are no meals with r bill of zero. Hence for this dataset no interpretation is possible for this data set.  
+
+### The interpretation of the slope coefficient $\hat{\beta}_1$ 
+
+The estimated slope coefficient $\hat{\beta}_1$ is the estimated  change in the response variable per unit change in the predictor variable.  In this case we estimate that the mean change is the tip given is $0.18 per dollar increase in the bill.  Another way of saying this for this specific data this that on average we estimate that customer tipping rate is 18%.    
+
+
+
+## Predicting the score on the final from the score on the first exam  
+
+We are interest to see if we can predict the final exam score from the first exam score.  We will use the data frame in the in the __Lock5Data)__ package names _StatGrades_.  The data set is loaded below.  
+
+```{r getGrades}
+
+data( StatGrades )
+head( StatGrades )
+tail( StatGrades )
+
+```
+  
+Clearly the predictor variable is the score on the first exam and the response variable is response variable.  We draw the scatterplot below.  
+
+```{r}
+
+ggplot( StatGrades,
+        aes( x=Exam1, y=Final )) +
+    geom_jitter( ) +
+    geom_smooth( method=lm, 
+                 se=FALSE ) +
+    geom_smooth( method=loess,
+                 se=FALSE,
+                 color="red") +
+    annotate( "text", 
+              x=20, y=90,
+              label="OLS Line",
+              hjust=0,
+              size=3,
+              color="blue") +
+    annotate( "text", 
+              x=20, y=85,
+              label="LOESS Line",
+              hjust=0,
+              size=3,
+              color="Red") +
+    xlab( "First exam core (100 possible pints)" ) +
+    ylab( "Final exam score (100 possible points)" ) +
+    ggtitle( "Final exam Score versus first exam score"  )+
+    theme_bw()
+
+```
+
+We see that the LOESS are roughly coincident when the score on the first exam is greater than 80.  However, below 80 we we find non-linear behavior.  This may be due to outliers.  We can better analyze this after we fit the data. 
+
+### Fitting the linerar model
+We fit OLS models using the R-function $lm$.  We use this function to estimate the intercept and slope estimates of the simple linear regression.  We demonstrate this below.
+
+```{r fitScores}
+
+slrScores <- 
+    lm( Final ~ Exam1,
+        data=StatGrades )
+summary( slrScores )
+
+```
+  
+The estimated regression equation is
+
+$$\hat{E}(Final|x=Exam1)=`r round(coef(slrScores)[1],2)` +
+`r round(coef(slrScores)[2],2)`x$$
+  
+### Interpretation of $\hat{\beta}_0$
+Refer to the scatterplot of the final exam score versus the first exam score.  We find no observations that are close to zero.  Hence there is no practical explanation of the iintercept term.  
+
+### Interpretation of $\hat{\beta}_1$
+The interpretation of the estimated slope coefficient is that we estimate on average an aadditionl point scored on the first exam will increase the score on the final exam by approximatetly 0.62 points.
