@@ -69,10 +69,11 @@ ggplot( Rings,
               color="Red") +
     xlab( "Carats" ) +
     ylab( "Price (Singapore Dollars)" ) +
-    ggtitle( "Singapore Strater Diamond Rings"  ) +
+    ggtitle( "Singapore Starter Diamond Rings"  ) +
     theme_bw()
 
 ```
+
   
  It appears that the relationship is linear because the blue OLS line and the red LOESS line are almost coincident.  Further, we can see that this is a very strong relationship because the data points are very close to the fitted OLS line.
  
@@ -89,7 +90,7 @@ summary( slrRings )
 The estimated regression model is
 $$\hat{E}(Price|X=Carats) = -259.63 + 372102.02 Carats  $$
 
-Given that the _Pice_ variable is relatively large compared to decimal parts of the regression we can rewrite the above equation as
+Given that the _Price_ variable is relatively large compared to decimal parts of the regression we can rewrite the above equation as
 
 $$\hat{E}(Price|X=Carats) = -260 + 3721Carats$$  
 
@@ -114,30 +115,206 @@ The estimated slope coefficient $\hat{\beta}_1$ is the estimated  change in the 
 Note that the range of data is much less than one carat.  We easily see this from the scatterplot.  It is more reasonable and easier to understand if we take an 0.01 carat increment.  Our interpretation then becomes that we estimated the mean value of the diamond ring changes by approximately $36 per 0.01 carat increase. 
 
 ### Fitted values and residuals
-The y-hat $\hat{y}$ is the symbol that represents the predicted values for the OLS line of best fit in linear regression. The equation for the fitted values is
+$\hat{y}$ is the symbol that represents the predicted values for the OLS line of best fit in linear regression. The equation for the fitted values is
  $$\hat{y}=\hat{\beta}_0 + \hat{\beta}_1 x$$  
  
- To obtain the fitted values with R we use the R-function fitted.  We obtain the fitted values below.
+ To obtain the fitted values with R we use the R-function fitted.  We obtain the fitted values below.  
  
-### Residuals
-The residuals are difference between the response variable and the fitted value for all obsevations in the data set.  Writing this as an equation we have
+The residuals are difference between the response variable and the fitted value for all observations in the data set.  Writing this as an equation we have
 $$\hat{e}=y_i - \hat{y}_i~~~~~i=1,...,n$$
 
 Note the $^$ over the $e$.  What does this mean.  Recall that the basic linear regression model is 
 $$y_i=\beta_0 + \beta_1x_i+e_i$$
 
-The $e_i$ are the unobservable error terms.  The residuals are the estimated error terms for your data set.  Since they are estimated we use $^$ to signify that we are estimating them.  
+The $e_i$ are the unobservable error terms.  The residuals are the estimated error terms for your data set.  Since they are estimated we use $^$ to signify that we are estimating them. We compute the residuals as follows:
+
+$$\hat{e}_i=\hat{y}_i - y_i$$
 
 ### Properties of residuals
-The sum of the residuals is always equal to zero.  That is
-$$\Sigma_{i=1}^2 \hat{e}_i=0$$
+1. The sum of the residuals is always equal to zero.
 
-This inples that the average of the residuals in the sample will be equal to zero,
- 
+2. This implies that the mean of the residuals in the sample will be equal to zero
+
+3. In turn this implies that the sum of the predicted values is equal to the sum of the response variables.  
+
+### Computing and adding the fittied values and residuals to the regression data set
+
+Using R compute the fitted values $\hat{y}$ and the residuals $\hat{e}$ as follows:
+
 ```{r fittedPrice}
-priceHat <- fitted( slrRings )
-head( priceHat )
+
+Rings$yHat <- fitted( slrRings )
+Rings$eHat <- residuals( slrRings )
+head( Rings )
+
 ```
+
+### Partioning the variation of Y into variation predicted by the model and variation not predicted by the model
+Inspect the the plot of fitted model given below.
+
+```{r partitionRing}
+set.seed( 1123 )
+n <- 25
+X <- round( rnorm( n, 80, 5 ))
+Y <- 40 + 0.75 * X
+Y <- round(Y + rnorm( length(Y), 0, 6))
+X<- round( X )
+y <- round( Y )
+Xbar <- mean( X )
+Ybar <- mean( Y )
+Means <- data.frame( Xbar, Ybar )
+DF <- data.frame( X, Y )
+fit <- lm( Y ~ X, data=DF)
+DF$Yhat <- fitted.values( fit )
+head(DF)
+
+ggplot( DF,
+        aes(x=X, y=Y )) +
+    geom_point() +
+    geom_smooth( method=lm, 
+                 se=FALSE ) +
+    geom_point( aes( y=Yhat),
+                color="blue") +
+    geom_point( data=Means,
+                aes( x=Xbar, y=Ybar),
+                size=4,
+                color="blue") +
+    geom_vline( x=Xbar,
+                linetype=2 ) +
+    geom_hline( y=Ybar,
+                linetype=2 ) +
+    annotate( "text",
+                x=Xbar+0.5, y=91,
+                label="bar(X)",
+                parse=TRUE,
+                hjust=0 ) +
+     annotate( "text",
+                x=73, y=Ybar+2,
+                label="bar(Y)",
+                parse=TRUE,
+                hjust=0 ) +
+    annotate( "segment",
+              x=86, y=105.43654,
+              xend=86, yend=114,
+              color="red",
+              linetype=2 ) +
+    annotate( "segment",
+               x=86, y=Ybar,
+               xend=86, yend=105.44,
+               linetype=2,
+               color="blue") +
+    annotate( "text", 
+               x=86.25, y=111,
+               label="Residual",
+               size=3,
+               hjust=0,
+               size=3,
+               color="red" ) +
+    annotate( "text", 
+               x=86.25, y=103.5,
+               label="Predicted variation",
+               size=3,
+               hjust=0,
+               color="blue" ) 
+```            
+             
+Looking at the plot we that for the $i^{}th$ point that the following relationship holds
+
+$$(y_i-\bar{y})=(\hat{y}_i-\bar{y})+(y_i-\hat{y}_i)$$
+
+That is, the at data point i the the deviation of the response variable $y_i-\bar{y})$ is equal to the sum of the deviation of the response from the mean of the response variable plus the sum of the residual $(y_i-\hat{y}_i)$.  
+
+If we square both sides of above equation and sum over all $n$ observations a miracle occurs and we obtain the following equation
+
+$$\Sigma_{i=1}^n (y_i- \bar{y})^2=\Sigma_{i=1}^n ( \hat{y}_i - \bar{y} )^2 + \Sigma_{i=1}^n ( y_i - \hat{y}_i )^2 $$
+
+We call the above equation the decomposition or partitioning of the sums of squares.
+
+Now the term of the left is numerator of the variance of $y$.  It is a measure of how variability of $y$.  We call this quantity the sum-of-squares of $y$ and denote it as
+$SYY$
+
+$SYY=\Sigma_{i=1}^n (y_i- \bar{y})^2$$
+
+The last term of the right side of decomposition of the sums of squares is the sum-of-squares of the residuals.  We call this quantity the residual sum of squares
+
+$$SSR = \Sigma_{i=1}^n ( y_i - \hat{y}_i )^2=\Sigma_{i=1}^n \hat{e}_i^2$$
+
+Because the residuals are the prediction error we want this quantity to be ass small possible.
+
+The last quantity $\Sigma_{i=1}^n ( \hat{y}_i - \bar{y} )^2$ is the reduction in prediction errors when we use the predictor to predict the response.  We will denote this by $SS_{Reg}$ or the sum of squares prediction.  So we have 
+
+$$SS_{Reg} = $\Sigma_{i=1}^n ( \hat{y}_i - \bar{y} )^2$$
+
+We can rewrite the decomposition of the sums-of-squares as
+
+$$SYY=SS_{Reg}+RSS$$
+
+#### Obtaining the decompostion of the sums-of squares
+A standard analytical technique is called the analysis of variance.  We can obtain the decomposition of the sums-of-squares by asking R to give it to us.  We do this below.  
+
+```{r ringsAnova}
+anova( fit )
+```
+
+The sums of squares decomposition for our hypothetical is
+
+Source     | SS 
+-----------|--------  
+$SS_{Reg}$ |  209.43  
+$RSS$      |  909.53  
+$SYY$      |  `r  209.43 +  909.53`  
+
+R does not give $SYY$ so we had to compute it by hand.  
+
+### The coefficient of determination $R^2$
+Recall that is $SS_{Reg}$ measure the relative predictive ability of our regression.  To be able to compare models we would like a standardized measure.  The standardized measure is call the coefficient of determination and is denoted by $R^2$.  We define as follows  
+
+$$R^2 = \frac{SS_{Reg}}{SYY}=1-\frac{RSS}{SYY}$$
+
+$$R^2 is a number that indicates how well data fit a statistical model - sometimes simply a line or a curve. An $R^2$ of 1 indicates that the regression line perfectly fits the data, while an $R^2$ of 0 indicates that the line does not fit the data at all. This latter can be because the data is utterly non-linear, or because it is random.
+
+$R^2$ is a statistic used in the context of statistical models whose main purpose is either the prediction of future outcomes on the basis of other related information. It provides a measure of how well observed outcomes are replicated by the model, as the proportion of total variation of outcomes explained by the model.
+
+### Obtaining the $R^2$
+We obtain the coefficient of variation by using R's summary function for linear models.  The R-code below obtains the coefficient of determination for our Rings data.
+
+```{r ringsR2}
+
+summary( slrRings )
+
+```
+
+On R's output the $R^2$ is called the multiple $R^2$.  This is an old that is no longer in use.  The value is given
+ 
+$$R^2= 0.9783$$  
+
+We interpret this value in the our diamond ring context that approximately 98% of the variation in the diamond ring prices is associated with the variation in the variation of the weight of the ring  in Carats.  
+
+### Estimating the standard deviaiton of the un-obsevable error terms  
+To estimate the estimated standard devatwion of the error terms we first estimate the mean square residuals.  We do this by dividing the residual sum-of-squared by the degrees of frredom.  
+
+Technically, the degrees of freedom are difficult to understand.  The number of independent ways by which a dynamic system can move, without violating any constraint imposed on it, is called number of degrees of freedom. In other words, the number of degrees of freedom can be defined as the minimum number of independent coordinates that can specify the position of the system completely.
+
+However the is a fiarly simple rule that will allow us to compute the degrees of frredon when we are using linear statistical models.  We simply subtract from the sample size $n$ the number of parameters we are estimating.  
+
+In simple linear regression we are estimating $\beta_0$ and $\beta_1$.  Thus the degrees of freedom is 
+$$df=n-2$$  
+
+Thus the mean-square-residual is given by
+
+$$MSR=\frac{RSS}{n-2}$$
+
+The mean square residual is found the ANOVA table with the label _Residuals_.  The anovat table is reprinted below.  
+
+```{r ringsANOVA2}
+anova( slrRings)
+```
+
+Therefor we have:
+
+$$MSR=1014$$
+
+### Estimated standard devation of errors
 
 ## Restaurant tips
 
@@ -195,7 +372,7 @@ ggplot( RestaurantTips,
     xlab( "Bill ($)" ) +
     ylab( "Tip ($)" ) +
     ggtitle( "Tips at the Bristro"  ) +
-    theme_bw()
+    theme_bw() 
 
 ```
   
@@ -291,7 +468,7 @@ $$\hat{E}(Final|x=Exam1)=`r round(coef(slrScores)[1],2)` +
 `r round(coef(slrScores)[2],2)`x$$
   
 ### Interpretation of $\hat{\beta}_0$
-Refer to the scatterplot of the final exam score versus the first exam score.  We find no observations that are close to zero.  Hence there is no practical explanation of the iintercept term.  
+Refer to the scatterplot of the final exam score versus the first exam score.  We find no observations that are close to zero.  Hence there is no practical explanation of the intercept term.  
 
 ### Interpretation of $\hat{\beta}_1$
-The interpretation of the estimated slope coefficient is that we estimate on average an aadditionl point scored on the first exam will increase the score on the final exam by approximatetly 0.62 points.
+The interpretation of the estimated slope coefficient is that we estimate on average an additional point scored on the first exam will increase the score on the final exam by approximately 0.62 points.
