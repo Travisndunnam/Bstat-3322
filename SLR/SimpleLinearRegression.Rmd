@@ -1,0 +1,811 @@
+---
+title: "Simple Linear Regression"
+author: "by Craig W. Slinkman"
+date: "December 1, 2015"
+output: 
+  html_document: 
+    number_sections: yes
+    toc: yes
+---
+# Simple Linear Regression
+Simple linear regression is a technique in parametric statistics that is commonly used for analyzing mean response of a variable Y which changes according to the magnitude of an predictor variable X.
+
+# The theoretical model
+The simple linear regression is given by
+
+$$y_i=\beta_0 + \beta_i x_i + e_i~~~~~~~~~i=1,n$$
+Where
+
+$~~~~~~~~~~~~~~~~y_i$ is the $i^{th}$ response variable  
+
+$~~~~~~~~~~~~~~~~x_i$ is the $i^{th}$ predictor variable  
+
+$~~~~~~~~~~~~~~~~\beta_0$ is the regression intercept coefficient  parameter   
+
+$~~~~~~~~~~~~~~~~\beta_1$ is the regression slope coefficient  
+
+$~~~~~~~~~~~~~~~~e_i$ is the unobservable random error term
+
+# Simple linear assumptions
+* We assume the statistical relationship is a linear function.  
+
+* The mean of the distribution of error terms is equal to zero.  Symbolically we have  
+
+$$E(e_i=0)$$
+
+* The variance of error terms is constant.  Symbolically we have 
+$$Var(Y|X=x_i)=\sigma^2$$
+
+* The error terms are statistically independent.  If the error terms are normally distributed then this implies that their correlation should be zero.  
+
+* If we are going to use the model for prediction than the  of the error terms should be normally distributed.  This last assumption can be written 
+
+$$e_i \sim N(0,\sigma^2)$$
+
+Note that this assumption is include the constant variance assumption as well as the normality assumption.  A normal distribution must have constant variance.  
+
+
+
+
+## Examples
+We resent three examples that we use through out these notes.  The background story for each of the data sets will follow.  
+
+1. The first example will be Singfat Chu's example of the pricing of "starter" diamond rings. 
+
+2. The second example is the tipping behavior at a bistro.  
+
+3.  The third example is attempting to predict students grades on the final exam as a function of their grade on the first exam.
+
+## Singapore diamond ring data
+The source of the data is a full page advertisement placed in the Straits Times newspaper issue of February 29, 1992, by a Singapore-based retailer of diamond jewelry.  
+
+The advertisement contained pictures of diamond rings and listed their prices, diamond content, and gold purity. Only 20K ladies' rings, each mounted with a single diamond stone, were considered for this study. 20K rings are made with gold of 20 carat purity. (Pure gold is rated as 24K.)  
+
+There were 48 such rings of varying designs. The weights of the diamond stones ranged from 0.12 to 0.35 carats (a one carat diamond stone weighs 0.2 gram) and were priced between $223 and $1086. The jewelry store adopted a fixed-price policy.  
+
+## The pricing of diamond rings
+In Singapore, the pricing of gold jewelry is simple. The price equals the current market value of the gold content (i.e., weight times the going rate per gram of gold) plus a craftsmanship fee.  
+
+However, the pricing of other jewelry like diamond rings is more complicated because they are not as standardized as gold jewelry. The price of diamond jewelry depends on the four C's: caratage, cut, color, and clarity of the diamond stone. A good cut gives a diamond more sparkle. Colorless diamonds are the most prized. A flawless diamond has maximum clarity because the passage of light is unimpeded through the stone. Cut, color, and clarity are subjective factors and are very hard for the layman to gauge.
+
+## Obtaining the data
+We can read the data set directly from the web location using the following R-script.  
+
+```{r getRings}
+RINGS <- "http://www.amstat.org/publications/jse/datasets/diamond.dat.txt"
+Rings <- 
+    read.table( RINGS, header=FALSE )
+colnames( Rings ) <- c( "Carats", "Price" )
+
+head( Rings )
+tail( Rings )
+```
+
+In this example we are predicting the _Price_.  Therefore, the response variable is the weight of the diamond.  The weight of the diamond is _Carats_.  A scatterplot of _Price_ versus _Carats_ is shown below.  It appears that over the _Carats_ the _Price_ appears to change in a linear manner.  
+
+```{r scatterRings}
+
+require( ggplot2 )
+
+ggplot( Rings,
+        aes( x=Carats, y=Price)) +
+    geom_jitter( ) +
+    geom_smooth( method=lm, 
+                 se=FALSE ) +
+    geom_smooth( method=loess,
+                 se=FALSE,
+                 color="red") +
+    annotate( "text", 
+              x=0.15, y=900,
+              label="OLS Line",
+              hjust=0,
+              size=3,
+              color="blue") +
+    annotate( "text", 
+              x=0.15, y=825,
+              label="LOESS Line",
+              hjust=0,
+              size=3,
+              color="Red") +
+    xlab( "Carats" ) +
+    ylab( "Price (Singapore Dollars)" ) +
+    ggtitle( "Singapore Starter Diamond Rings"  ) +
+    theme_bw()
+
+```
+
+  
+ It appears that the relationship is linear because the blue OLS line and the red LOESS line are almost coincident.  Further, we can see that this is a very strong relationship because the data points are very close to the fitted OLS line.
+ 
+### Fitting the linerar model
+We fit OLS models using the R-function $lm$.  We use this function to estimate the intercept and slope estimates of the simple linear regression.  We demonstrate this below.
+
+```{r fitPrice}
+slrRings <- lm( Price ~ Carats,
+                data=Rings)
+summary( slrRings )
+
+```
+
+The estimated regression model is
+$$\hat{E}(Price|X=Carats) = -259.63 + 372102.02 Carats  $$
+
+Given that the _Price_ variable is relatively large compared to decimal parts of the regression we can rewrite the above equation as
+
+$$\hat{E}(Price|X=Carats) = -260 + 3721Carats$$  
+
+If we want to stay with our $x$ and $y$ notation we can write the above equation as
+
+$$\hat{y}=-260+3721x$$
+
+Note that $\hat{E}(Price|X=Carats)$ and $\hat{y}$ are called the fitted values by some statisticians.  Others call these values the predicted values.  I tend to use both of these terms.  
+
+### Interpretation of the estimated regression coefficients
+You always must be very careful on interpreting the meaning of the regression coefficients.  This is particularly true of the intercept coefficient $\hat{\beta}_0$.
+
+#### Interpretation of $\hat{\beta}_0$
+Look at the scatterplot of _Price_ versus _Carats_.  Notice that there are no values of _Carat_ that have a value of zero or are negative.  That is the intercept value is outside the range of the predictor variable _Carats_.  When this occurs __we cannot give an economic interpretation of the inrtercept coefficient__. 
+
+Hence for this dataset no interpretation is possible for this data set.  
+
+### The interpretation of the slope coefficient $\hat{\beta}_1$ 
+
+The estimated slope coefficient $\hat{\beta}_1$ is the estimated  change in the response variable per unit change  in the predictor variable.  Thus our interpretation of the estimated slope coefficient is that we estimate on average that the value of a diamond ring increases by $3721 per _Carat_ increase.  
+
+Note that the range of data is much less than one carat.  We easily see this from the scatterplot.  It is more reasonable and easier to understand if we take an 0.01 carat increment.  Our interpretation then becomes that we estimated the mean value of the diamond ring changes by approximately $36 per 0.01 carat increase. 
+
+### Fitted values and residuals
+$\hat{y}$ is the symbol that represents the predicted values for the OLS line of best fit in linear regression. The equation for the fitted values is
+ $$\hat{y}=\hat{\beta}_0 + \hat{\beta}_1 x$$  
+ 
+ To obtain the fitted values with R we use the R-function fitted.  We obtain the fitted values below.  
+ 
+The residuals are difference between the response variable and the fitted value for all observations in the data set.  Writing this as an equation we have
+$$\hat{e}=y_i - \hat{y}_i~~~~~i=1,...,n$$
+
+Note the $^$ over the $e$.  What does this mean.  Recall that the basic linear regression model is 
+$$y_i=\beta_0 + \beta_1x_i+e_i$$
+
+The $e_i$ are the unobservable error terms.  The residuals are the estimated error terms for your data set.  Since they are estimated we use $^$ to signify that we are estimating them. We compute the residuals as follows:
+
+$$\hat{e}_i=\hat{y}_i - y_i$$
+
+### Properties of residuals
+1. The sum of the residuals is always equal to zero.
+
+2. This implies that the mean of the residuals in the sample will be equal to zero
+
+3. In turn this implies that the sum of the predicted values is equal to the sum of the response variables. 
+
+4. There should no pattern in the residuals. We can't use the value of one variable to predict the value of another variable.  
+
+
+### Computing and adding the fittied values and residuals to the regression data set
+
+Using R compute the fitted values $\hat{y}$ and the residuals $\hat{e}$ as follows:
+
+```{r fittedPrice}
+
+Rings$yHat <- fitted( slrRings )
+Rings$eHat <- residuals( slrRings )
+head( Rings )
+```
+
+### Partioning the variation of Y into variation predicted by the model and variation not predicted by the model
+Inspect the the plot of fitted model given below.
+
+```{r partitionRing}
+set.seed( 1123 )
+n <- 25
+X <- round( rnorm( n, 80, 5 ))
+Y <- 40 + 0.75 * X
+Y <- round(Y + rnorm( length(Y), 0, 6))
+X<- round( X )
+y <- round( Y )
+Xbar <- mean( X )
+Ybar <- mean( Y )
+Means <- data.frame( Xbar, Ybar )
+DF <- data.frame( X, Y )
+fit <- lm( Y ~ X, data=DF)
+DF$Yhat <- fitted.values( fit )
+head(DF)
+
+ggplot( DF,
+        aes(x=X, y=Y )) +
+    geom_point() +
+    geom_smooth( method=lm, 
+                 se=FALSE ) +
+    geom_point( aes( y=Yhat),
+                color="blue") +
+    geom_point( data=Means,
+                aes( x=Xbar, y=Ybar),
+                size=4,
+                color="blue") +
+    geom_vline( x=Xbar,
+                linetype=2 ) +
+    geom_hline( y=Ybar,
+                linetype=2 ) +
+    annotate( "text",
+                x=Xbar+0.5, y=91,
+                label="bar(X)",
+                parse=TRUE,
+                hjust=0 ) +
+     annotate( "text",
+                x=73, y=Ybar+2,
+                label="bar(Y)",
+                parse=TRUE,
+                hjust=0 ) +
+    annotate( "segment",
+              x=86, y=105.43654,
+              xend=86, yend=114,
+              color="red",
+              linetype=2 ) +
+    annotate( "segment",
+               x=86, y=Ybar,
+               xend=86, yend=105.44,
+               linetype=2,
+               color="blue") +
+    annotate( "text", 
+               x=86.25, y=111,
+               label="Residual",
+               size=3,
+               hjust=0,
+               size=3,
+               color="red" ) +
+    annotate( "text", 
+               x=86.25, y=103.5,
+               label="Predicted variation",
+               size=3,
+               hjust=0,
+               color="blue" ) 
+```            
+             
+Looking at the plot we that for the $i^{}th$ point that the following relationship holds
+
+$$(y_i-\bar{y})=(\hat{y}_i-\bar{y})+(y_i-\hat{y}_i)$$
+
+That is, the at data point i the the deviation of the response variable $y_i-\bar{y})$ is equal to the sum of the deviation of the response from the mean of the response variable plus the sum of the residual $(y_i-\hat{y}_i)$.  
+
+If we square both sides of above equation and sum over all $n$ observations a miracle occurs and we obtain the following equation
+
+$$\Sigma_{i=1}^n (y_i- \bar{y})^2=\Sigma_{i=1}^n ( \hat{y}_i - \bar{y} )^2 + \Sigma_{i=1}^n ( y_i - \hat{y}_i )^2 $$
+
+We call the above equation the decomposition or partitioning of the sums of squares.
+
+Now the term of the left is numerator of the variance of $y$.  It is a measure of how variability of $y$.  We call this quantity the sum-of-squares of $y$ and denote it as
+$SYY$
+
+$SYY=\Sigma_{i=1}^n (y_i- \bar{y})^2$$
+
+The last term of the right side of decomposition of the sums of squares is the sum-of-squares of the residuals.  We call this quantity the residual sum of squares
+
+$$SSR = \Sigma_{i=1}^n ( y_i - \hat{y}_i )^2=\Sigma_{i=1}^n \hat{e}_i^2$$
+
+Because the residuals are the prediction error we want this quantity to be ass small possible.
+
+The last quantity $\Sigma_{i=1}^n ( \hat{y}_i - \bar{y} )^2$ is the reduction in prediction errors when we use the predictor to predict the response.  We will denote this by $SS_{Reg}$ or the sum of squares prediction.  So we have 
+
+$$SS_{Reg} = $\Sigma_{i=1}^n ( \hat{y}_i - \bar{y} )^2$$
+
+We can rewrite the decomposition of the sums-of-squares as
+
+$$SYY=SS_{Reg}+RSS$$
+
+### Obtaining the decompostion of the sums-of squares
+A standard analytical technique is called the analysis of variance.  We can obtain the decomposition of the sums-of-squares by asking R to give it to us.  We do this below.  
+
+```{r ringsAnova}
+anova( fit )
+```
+
+The sums of squares decomposition for our hypothetical is
+
+Source     | SS 
+-----------|--------  
+$SS_{Reg}$ |  209.43  
+$RSS$      |  909.53  
+$SYY$      |  `r  209.43 +  909.53`  
+
+R does not give $SYY$ so we had to compute it by hand.  
+
+### The degrees of freedom
+ the number of degrees of freedom is the number of values in the final calculation of a statistic that are free to vary. The number of independent ways by which a dynamic system can move, without violating any constraint imposed on it, is called number of degrees of freedom.  
+ 
+In this class it is equal to the sample size minus the number of parameters we estimate before we can compute the residual sums of squares.  The table below gives the number of degrees of freedom for the one population mean model and the simple linear population model.  
+
+$$E[Y|X=x_i]=\beta_0~~~~~~~~~~~~~~~~~~df=n-1$$
+$$E[Y|X=x_i]=\beta_0 + \beta_1 x_i~~~~~~df=n-2$$
+
+Note we only count linear parameters we do not count  standard deviations.
+
+### Mean square residuals
+The mean square residuals is a variance.  Mean squares are always equal to a sums of squares divided by the degrees of freedom for the specific sums of squares.  For simple linear regression this is equal to 
+
+$$S^2=MSR=\frac{RSS}{n-2}$$  
+The $MSR$ is the estimated variance of the unobservable error terms.  
+
+To obtain this value in R we use the ANOVA table.
+
+```{r, echo=FALSE}
+anova( fit )
+```
+
+### The estimated standard devation of the residuals
+The estimated variance of the unobservable residuals is given by
+
+$$s_y.x^2 = \frac{RSS}{n-2}$$
+  
+```{r,echo=FALSE}
+anova( fit )
+```
+
+
+### The coefficient of determination $R^2$
+Recall that is $SS_{Reg}$ measure the relative predictive ability of our regression.  To be able to compare models we would like a standardized measure.  The standardized measure is call the coefficient of determination and is denoted by $R^2$.  We define as follows  
+
+$$R^2 = \frac{SS_{Reg}}{SYY}=1-\frac{RSS}{SYY}$$
+
+$$R^2 is a number that indicates how well data fit a statistical model - sometimes simply a line or a curve. An $R^2$ of 1 indicates that the regression line perfectly fits the data, while an $R^2$ of 0 indicates that the line does not fit the data at all. This latter can be because the data is utterly non-linear, or because it is random.
+
+$R^2$ is a statistic used in the context of statistical models whose main purpose is either the prediction of future outcomes on the basis of other related information. It provides a measure of how well observed outcomes are replicated by the model, as the proportion of total variation of outcomes explained by the model.
+
+### Obtaining the $R^2$
+We obtain the coefficient of variation by using R's summary function for linear models.  The R-code below obtains the coefficient of determination for our Rings data.
+
+```{r ringsR2}
+
+summary( slrRings )
+
+```
+
+On R's output the $R^2$ is called the multiple $R^2$.  This is an old that is no longer in use.  The value is given
+ 
+$$R^2= 0.9783$$  
+
+We interpret this value in the our diamond ring context that approximately 98% of the variation in the diamond ring prices is associated with the variation in the variation of the weight of the ring  in Carats.  
+
+### Estimating the standard deviaiton of the un-obsevable error terms  
+To estimate the estimated standard deviation of the error terms we first estimate the mean square residuals.  We do this by dividing the residual sum-of-squared by the degrees of freedom.  
+
+Technically, the degrees of freedom are difficult to understand.  The number of independent ways by which a dynamic system can move, without violating any constraint imposed on it, is called number of degrees of freedom. In other words, the number of degrees of freedom can be defined as the minimum number of independent coordinates that can specify the position of the system completely.
+
+However the is a fairly simple rule that will allow us to compute the degrees of freedom when we are using linear statistical models.  We simply subtract from the sample size $n$ the number of parameters we are estimating.  
+
+In simple linear regression we are estimating $\beta_0$ and $\beta_1$.  Thus the degrees of freedom is 
+$$df=n-2$$  
+
+Thus the mean-square-residual is given by
+
+$$MSR=\frac{RSS}{n-2}$$
+
+The mean square residual is found the ANOVA table with the label _Residuals_.  The $ANOVA$ table is reprinted below.  
+
+```{r ringsANOVA2}
+anova( slrRings)
+```
+
+Therefor we have:
+
+$$MSR=1014$$
+
+### The estimated standard deviation of the error terms
+R call the estimated standard deviation of the residuals _Residual standard error_.  This is found on the model summary output. 
+
+```{r}
+summary( slrRings )
+```
+
+In this class we will denote the estimated standard deviation of the residuals by $s_{y.x}$.  This is computed by $s_{y.x}$  
+
+$$s_{y.x}=\sqrt{MSR}=\sqrt{\frac{RSS}{n-2}}$$
+
+From the R-output we find 
+$$s_{y.x}=31.84 \approx 32$$
+
+### Interpretation of $s_{y.x}$
+The estimated standard deviation of the error terms is a standard deviation.  Provided the errors are normally distributed we can use the empirical rule to estimate the proportion of response variable values that fall within 1, 2, or 3 standard deviations.  The table below demonstrates this.  
+
+Percentage | Bounds  
+-----------|----------
+68%        | $\pm 32$  
+95%        | $\pm 64$  
+99.7%      | $\pm 96$  
+
+Thus we expect approximately 95% of the observations to be with $64 of the mean regression line.  Another way to say this is that 95% of the random error terms will be less than $64.  
+
+This is an approximation.  We can check this by counting the the number of residuals with an absolute less than $64.  
+### Checking model validity with graphs
+We call the process of checking a model to see if the data satisfy the assumption of linearity, constant variance, and normality _diagnostic checking_.  
+
+Raju Rimal ( https://rpubs.com/therimalaya/43190) has written an R-function called $diagPlot$ to perform the graphical analysis for us.  The function can be found in the working directory of the SLR.Rmd file.  To use this function we must use a source statement to define the function so we can use it. We demonstrate this function for the diamond ring price data set below.
+
+```{r}
+source( "diagPLot.R")
+diagPlot( slrRings )
+```
+
+#### Assessing linearity
+If the relationship between the response variables and the predictor variables is linear then a scatterplot of the residuals $\hat{e}_i$ versus the predicted values $\hat{e}_i$ should be a null plot.  
+
+In practice we draw this plot and add a loess smooth.  If the lowess smooth is an approximate horizontal line then there is no evidence on non-linearity.  
+
+Recall that the end points of the loess have the greatest variability and unless there a consistent systematic departure of the loess than we conclude that the linearity assumption is correct.  
+
+For the diamond ring price data inspection of the residual versus versus fitted values plot is consistent with a linear model.  
+
+#### Assessing normality
+To assess the normality of the error terms we draw a normal QQ plot of the residuals $\hat{e}_i$.  
+
+The inspection of the normal QQ plot for the diamond ring price data shows little evidence that the data is not normal.  
+
+#### Constant data assumption
+We check the constant variance assumption by plotting the square root of the absolute value of the residuals $\sqrt{|\hat{e}_i|}$ versus the predicted values $\hat{Y}_i$.  We then use the lowess smoothing technique to smooth the plot.  This loess smooth should be approximately horizontal line. This smooth is much more variable than the fitted $\hat{e}_i$ versus predicted \hat{y}_i$ line.  
+
+I=inspecting the line line for the diamond rings data we find that the line is highly variable but there is some indication that the variance increases after $600 dollars.  
+We couple this with the normal QQ plot of the residuals and conclude that over the range of the data the variance appears to be relatively constant.
+
+#### Influential observations
+The diagnostic plot function adds two more plots that assess the impact of points analyzed one at a time on the estimated regression coefficients.  
+
+We will not address these plots here because they are an advanced topic other than to comment that as long as as the Cook's distance is less than 1.00 there are know data observations that are usually no problems with your data,  
+
+### Statistical Inference
+In this section we address the following statistical inference.  The same general rules apply to linear regression analysis that apply to univariate statistical inference. In this section we assume that the error terms are normally distributed.  
+
+We will address the following statistical inferences:
+
+* Hypothesis test for model utility
+* Confidence intervals for the regression coefficients  
+* Hypothesis tests for the regression coefficients  
+* Confidence interval for estimated regression line
+
+#### Hypothesis test for model utility
+Suppose we fit a simple linear regression model to a data set.  Our standard model is  
+
+$$E(Y|X=x_i)=\beta_0+\beta_1x_i$$
+
+If we assume  that a linear relationship does not exist between the response variable and the predictor variable then $\beta_1`=0$ and we have
+ 
+$$E(Y|X=x_i)=\beta_0+0 \times x_i=\beta_0$$  
+
+It is a statistical fact that if we use the OLS estimation procedure  for the model 
+
+$$E(Y|X=x_i)=\beta_0$$ 
+
+We find that $\hat{\beta_0}=\bar{y}$
+
+In other words if the response variable is not linearly related to the predictor variable then the OLS estimator of the intercept coefficient is the sample mean. 
+
+Hence we have two possible models.  The first model is the mean model $E(Y|X=x_i)=\beta_0$.  The more more complex model is the simple linear regression model $E(Y|X=x_i)=\beta_0+\beta_1x_1$.  By complexity we mean a model with more estimated parameters. The question we want to ask is "What do we gain by adding an addition estimated parameter to the simple model?"
+
+We formalize this for hypothesis testing.  Our null hypothesis is that there is no linear relationship between the predictor variable and the response variable.  That is 
+
+$$NH:~E(Y|X)=\beta_0$$
+
+The alternative hypothesis is that there is a linear relationship between the predictor variable and the response variable.  
+
+The plot below shows the null hypothesis model and the alternative hypothesis model for the diam ring price data. 
+```{r}
+
+Carats <- rep( Rings$Carats, 2 )
+priceAH <- fitted( slrRings )
+m <- length( priceAH )
+priceNH <- rep( mean( Rings$Price  ), m)
+Price   <- c( priceNH, priceAH )
+Hypothesis <- c( rep( 'NH', m),
+                 rep( 'AH', m))
+DF <- data.frame(  Carats, 
+                   Price, 
+                   Hypothesis  )
+
+ggplot( DF,
+        aes( x=Carats, 
+             y=Price, 
+             linetype=Hypothesis )) +
+    geom_smooth( method=lm, color="black" ) +
+    scale_linetype_discrete(name  ="Hypothesis",
+                     breaks=c("NH", "AH")) +
+    annotate( "text",
+              x=0.10, y=900,
+              label="NH: E(Y|X)==beta[0]",
+              parse=TRUE,
+              hjust=0,
+              size=4,
+              color="black") + 
+    annotate( "text",
+              x=0.10, y=825,
+              label="AH: E(Y | X)==beta[0]+beta[1]*x",
+              parse=TRUE,
+              hjust=0,
+              size=4,
+              color="black") +
+    ggtitle( "Null and Alternative Models ") +
+    theme_bw()
+
+```
+
+A logically equivalent set of hypotheses is
+
+$$NH:~\beta_1=0$$
+$$AH:~\beta_1 \ne 0$$
+
+The test statistic for this test is computed by the ratio of the mean squares.  These can be found on the ANOVA table.  
+
+For the diamond ring price data we have 
+```{r}
+anova(slrRings )
+```
+
+The mean square regression is found on the _Carats_ row.  The mean residual sum of squares if found on the _Residuals_ row.  The ratio of these two quantities gives an F-test statistic.  We will not use this test statistic in this class but will instead rely on the p-value.  We see the p-value is very small
+
+$$pValue=\frac{2.2}{10,000,000,000,000,000} \approx 0$$  
+
+Therefore we have very strong sample evidence that the null hypothesis is incorrect.  
+
+Note that the $F$ test statistic can be found on the R's regression summary output.  It is found on the last land.  This saves you from having to run the $anova$ function.  
+
+```{r}
+summary( slrRings )
+```
+
+Be aware that the test for model utility is a two tail test.  It simply tests the following hypothesis set
+
+$NH:~No~linear~relation~between~the~predictor~and~response~ variables$ 
+$AH:~There~is~a~linear~relationship~between~the~predictor~and~the~response variables$  
+
+You should also be aware that if you have a monotonic nonlinear relationship this test will probably reject the null hypothesis.  It is not a test for linearity but a test to tell if predictor variable is useful in predicting the response variable.  
+
+__There is no excuse for the failure to plot and look!__
+
+#### Confidence intervals for the regression coefficients
+We know turn to computing the confidence intervals for the regression coefficients.  We will not discuss the formulas used to compute these but will rely on R to do this for us. 
+##### The intercept coefficient
+Usually the intercept coefficient has not interpretation and only serves to minimize the residual sum of squares.  When this situation arises it makes no sense to compute the confidence interval for the intercept.  
+
+However, occasionally we do need to compute a confidence interval for the coefficient because it has meaning in the context of the managerial situation.  
+
+To compute the confidence interval for the intercept we use the R-function $confint$.  
+
+Suppose we want to compute the 98% confidence interval for 
+the diamond ring prices data.  We do as follows:
+
+```{r}
+confint( slrRings, 1, 0.98 )
+```
+
+It makes no sense to interpret this confidence interval because there is not an observation has a values less than or equal to zero in the diamond ring price data set.  
+
+#### The confidence intercept for the slope
+We use the same R-function to compute the confidence interval.  A 98% confidence interval for the slope coefficient is found by
+
+```{r}
+confint( slrRings, 2, 0.98 )
+```
+
+We can also compute confidence intervals for all the regression coefficients by 
+
+```{r}
+confint( slrRings, level=0.98 )
+```
+
+#### Plotting the slope coefficient
+We can also plot the confidence interval coefficients (See http://www.r-bloggers.com/coefplot-new-package-for-plotting-model-coefficients/).  
+
+To do so we must install and require the package _coefplot_.  We plot the coefficients below:
+
+```{r}
+require( coefplot )
+coefplot( slrRings )
+```
+
+We have already seen the the intercept has no interpretation and therefore we can remove it from our plot by creating a coefficient data.frame.  
+
+```{r}
+coefplot( slrRings,
+          intercept=FALSE )
+```
+
+#### Interpretation of coefficients and confidence intervals 
+We previously discussed that the slope coefficient for the diamond rings data set is difficult to interpret because it is a per carat increase in a data set that does not even have 0.5 carat in it.  
+
+We had decided that we will interpret the regression coefficients for 0.01 carat increase.  Thus our estimate is computed as follows:
+
+```{r}
+slope <- round( coef( slrRings )[2] * 0.01, 2 )
+slope 
+```
+Likewise we get the 98% confidence lower and upper confidence bounds:
+
+```{r}
+interval <- 
+    round( confint( slrRings, 
+                    level=0.98 )[2,] /
+                     100, 2 )
+
+```
+Our managerial interpretation of slope coefficient for the diamond rings price data set is as follows:
+
+>We estimate the the average marginal change  in the price of a diamond ring is approximately $37.20 per 0.01 additional carat.  We are 98% sure that the true but unknown average marginal increase in the value is between $35.20 and $39.30.  
+
+We can also give the confidence interval as $35.20 \pm 2$.  
+
+#### Hypothesis test of the regression coefficients.  
+Unless you plan to do theoretical research in business or economics you will not be likely to need to perform hypotheses test on the regression coefficients.  Therefore we will not cover them at this time.  
+
+#### Confidence interval for the estimated regression line
+The confidence interval of the regression line is drawn for your automatically by the plotting2 function geom_smooth.  This region is shown below.  
+
+```{r}
+bp <- 
+    ggplot( Rings ,
+        aes( x=Carats, y=Price)) +
+    geom_point() +
+    geom_smooth( method=lm )
+```
+
+The shaded grey area is the confidence for the mean value of y for each value of x in the range of the data set, that is, $\hat{E}[Y|X=x] \pm ME[\hat{E}[Y|X=x]$.
+
+There are times when we are not interested in the prediction of the response variable at a specific value of the predictor but want to know the average value of the response variable at the value of the predictor variable.  Because we are working with averages we are computing confidence intervals for the average response variable given a value of the predictor.  
+
+The equations to predict a new response variable value $\hat{Y}_{Mean}$ at value of $X_{Mean}$ are 
+
+$$\hat{E}Y_{Mean}=\hat{\beta}_0+\hat{\beta}_1 x_{Mean}$$  
+
+$$SXX=\Sigma_{i=1}^2(x_i-\bar{x})^2$$
+
+$$~~~~~~~~~~~~~~~~~~\widehat{se}_{Mean} = s_{y.x} \sqrt{ \frac{1}{n} + \frac{(x_{Mean} - \hat{x})}{SXX}}$$
+
+$$~~~~~~~~~~~\widehat{me}_{Mean}=\sqrt{F(a-\alpha/2;1,n-2)}\widehat{se}_{Mean}$$
+
+The prediction interval is computed like a conference interval 
+
+ $$\hat{Y}_{Mean} \pm \widehat{se}_{Mean}$$
+
+As you can see it is a fairly complicated process to estimate the average value of y at a specific value of x.  You would need to learn how to look up the quantiles of the F distribution which has two different degrees of freedom. 
+
+Luckily for us R can can do this for us.  Suppose we want to estimate the average price of 0.25 carat ring. We first need to create a variable with _exactly_ the same name as the predictor variable is __slrRings__.  
+
+```{r}
+Carats <- 0.25
+```
+
+We now create a new data frame.  For this example I will call it __Predictor__.  
+
+```{r}
+( Predictor <- data.frame( Carats ))
+```
+
+
+-----
+##### Description
+
+###### Predicted values based on linear model object
+
+__Usage__
+
+__S3 method for class 'lm'__  
+
+```
+predict(object, 
+         newdata, 
+         se.fit = FALSE, 
+         df = Inf,
+         interval = c("none", "confidence", "prediction"),
+        level = 0.95 )
+        
+```
+
+We apply this to a $slrRings$ data to compute a 98% confidence interval for the mean diamond ring price when the diamond weight is 0.25 carats.
+
+```{r}
+Estimation <-
+    predict( slrRings,
+             Predictor,
+             df=48-2,
+             interval="confidence",
+             level=0.98 )
+Estimation <- 
+    round( Estimation )
+Estimation
+
+```
+
+We estimate that the average price of a 0.25 carat ring is $\$`r Estimation [1,1]`$ We are 98% sure that the true but unknown true mean price is between $\$`r Estimation[1,2]`$  and $\$`r Estimation[1,3]`$.
+
+### Predicting new values
+We first start by illustrating the difference between estimation of a mean and predicting a new value.  
+
+Consider the average high temperature for December 8 according to AccuWeather.com ( http://www.accuweather.com/en/us/arlington-tx/76010/December-weather/331134 ) is $58^{\circ} F$.  This is an estimate of the  average of the temperature  December 8 for all December 8^{ts}. 
+
+In contrast the predicted temperature for Arlington Texas on December 8, 2015 is $70^{\circ}F$.  This is a prediction for a single day.
+
+The equations to predict a new response variable value $\hat{Y}_{Pred}$ at value of $X_{Pred}$ are 
+
+$$\hat{Y}_{Pred}=\hat{\beta}_0+\hat{\beta}_1 x_{Pred}$$  
+
+$$SXX=\Sigma_{i=1}^2(x_i-\bar{x})^2$$
+
+$$~~~~~~~~~~~~~~~~~~\widehat{se}_{Pred} = s_{y.x} \sqrt{1 + \frac{1}{n} + \frac{(x_{Pred} - \hat{x})}{SXX}}$$
+
+$$~~~~~~~~~~~\widehat{me}_{Pred}=\sqrt{F(a-\alpha/2;1,n-2)} \widehat{se}_{Pred}$$
+
+The prediction interval is computed like a conference interval 
+
+ $$\hat{Y}_{Pred} \pm \widehat{se}_{Pred}$$
+
+Suppose we want to predict the price of a diamond ring that weighs 0.25 carats.  We use the same approach as before but change the __interval__ parameter to "pred".  
+
+```{r}
+
+( Predictor <- data.frame( Carats=0.25 ))
+
+Prediction <-
+   predict( slrRings,
+             Predictor,
+             df=48-2,
+             interval="pred",
+             level=0.98 )
+Prediction <-
+    round( Prediction )
+Prediction
+
+```
+
+The predicted price of a 0.25 carat diamond ring is $\$`r Prediction[1,1]`$. The probability is 98% that the price of the ring will be between $\$`r Prediction[1,2]`$ and $\$`r Prediction[1,3]`$.  
+
+#### Facts about prediction
+The following facts appear about using linear regression for prediction.  
+* The predicted value is always an estimated expected value.  Thus, the estimated mean and the predicted value are equal.  
+
+* The standard error of the prediction is always wider than the standard error of estimation.  
+
+* The prediction intervals are always wider than the estimation intervals.  
+
+* Unlike confidence intervals prediction intervals are probability statements.  
+
+#### Plotting simple linear regression prediction intervals
+Suppose we want to produce a graph that shows the predictions over the entire range of possible predictor values.  The code below shows how easy this is to do using ggplot2.  
+
+```{r}
+xmin <- min( Rings$Carats)
+xmax <- max( Rings$Carats )
+xmin  <- round( xmin, 1 )
+xmax  <- round( xmax, 1 )
+Carats <- seq( xmin, xmax, 0.01 )
+Predictor <- data.frame( Carats )
+Prediction <-
+   predict( slrRings,
+             Predictor,
+             df=48-2,
+             interval="pred",
+             level=0.98 )
+Prediction <-
+    round( Prediction )
+Prediction <- 
+    data.frame( Predictor, Prediction )
+head( Prediction )
+tail( Prediction )
+
+ggplot( Prediction,
+        aes( x=Carats, y=fit )) +
+    geom_line() +
+    geom_ribbon(aes( x=Carats,
+                     ymin=lwr, 
+                     ymax=upr, 
+                     fill = "band",
+                     alpha = 0.3)) +
+    geom_point( data=Rings, aes(x=Carats, y=Price)) +
+    ylab( "Price ($)" ) +
+    ggtitle( "Diamond Ring Price Predictions and 98% Prediction Interval" ) +
+    theme( legend.position="none")
+    
+```
+
+#### Extraploation and Interpolation
+When we are estimating or predicting a new value the confidence we have in our result depends upon where the predictor variable is within the data set.  If predictor is greater than the minimum predictor variable value and less than or equal than the maximum value in the data set then we are interpolation.  
+
+Interpolation is safe because we have information on the behavior of the data.
+
+If we are outside the range of the data then we are extrapolation.  We have no information about the behavior of the data.  The model may not be linear or the variability of the residuals may increase. 
+
+Thus it is risky to use the model outside of the range of data used to fit it. 
