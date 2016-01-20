@@ -116,7 +116,10 @@ ggplot( Rings,
 
   
  It appears that the relationship is linear because the blue OLS line and the red LOESS line are almost coincident.  Further, we can see that this is a very strong relationship because the data points are very close to the fitted OLS line.
- 
+
+### Determing the best fitting line
+
+
 ### Fitting the linerar model
 We fit OLS models using the R-function $lm$.  We use this function to estimate the intercept and slope estimates of the simple linear regression.  We demonstrate this below.
 
@@ -414,6 +417,7 @@ Percentage | Bounds
 Thus we expect approximately 95% of the observations to be with $64 of the mean regression line.  Another way to say this is that 95% of the random error terms will be less than $64.  
 
 This is an approximation.  We can check this by counting the the number of residuals with an absolute less than $64.  
+
 ### Checking model validity with graphs
 We call the process of checking a model to see if the data satisfy the assumption of linearity, constant variance, and normality _diagnostic checking_.  
 

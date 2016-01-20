@@ -1,0 +1,289 @@
+Equity	Symbol	
+C & D	CHP	
+C D I	CDI	
+C N L Realty Invest	NNN	
+C N a Financial	CNA	
+C N a Surety	SUR	
+C P I	CPY	
+C T S	CTS	
+C a C I	CAI	
+Cabco Serie 2004-101	GYB	
+Cabelas	CAB	
+Cablevision System	CVC	
+Cabot	CBT	
+Cabot Oil Gas	COG	
+Caci Intl	CACI	
+Cadbury	CBY	
+Cae	CGT	
+Cai International I	CAP	
+Cal Dive International	DVR	
+Calamos Gbl Dyn	CHW	
+Calgon Carbon	CCC	
+California Water	CWT	
+Callaway Golf	ELY	
+Callon	CPE	
+Calpine	CPN	
+Cambrex	CBM	
+Camden Property	CPT	
+Cameco	CCJ	
+Campbell Soup	CPB	
+Canadian Natural	CNQ	
+Canadian Pacific Railway	CP	
+Canadian Railway	CNI	
+Canon	CAJ	
+Cantel	CMN	
+Capital Lease Fnding	LSE	
+Capital Lodging	TCL	
+Capital One	COF	
+Capital Protected No	GIC	
+Capital Sr Living	CSU	
+Capital Trust Sbi	CT	
+Capitalsource	CSE	
+Capitol Bancorp	CBC	
+Capped Leveraged Index Return Notes	MKI	
+Capped Leveraged Index Return Notes	BPF	
+Capped Leveraged Index Return Notes	RHQ	
+Capstead	CMO	
+Carbo Ceramics	CRR	
+Cardinal Health	CAH	
+Carlisle	CSL	
+Carmax	KMX	
+Carnival	CCL	
+Carnival	CUK	
+Carpenter	CRS	
+Carriage	CSV	
+Carters	CRI	
+Cascade	CAE	
+Cascal Nv	HOO	
+Cash America	CSH	
+Castle (a.m.) Co.	CAS	
+Caterpillar	CAT	
+Cato	CTR	
+Cb Richard Ellis	CBG	
+Cbl	CBL	
+Cbs	CBS	
+Cbs	CBS.A	
+Cbs Corp	RBV	
+Cec Entertainment	CEC	
+Cedar Fair	FUN	
+Cedar Shop	CDR	
+Celanese	CE	
+Celestica	CLS	
+Cemex	CX	
+Centene	CNC	
+Centerpoint	CNP	
+Centerpulse	CEP	
+Centex	CTX	
+Centracore	CPV	
+Centrais Eletricas Brasileiras S.a.-eletrobras	EBR	
+Centrais Eletricas Brasileiras S.a.-eletrobras	EBR.B	
+Central Pacific Financial	CPF	
+Central Vermont Public Service	CV	
+Centurytel	CTL	
+Cenveo	CVO	
+Certegy	FIS	
+Cf Industries	CF	
+Cf Msci Eafe Ppeln	PPI	
+Cf Russel 1k Gr Ppns	PLR	
+Cf Sp 500 Lasers	IEL	
+Cfi Cboe Sp 500 Bw	PBN	
+Cfi Djia Ppns	PPJ	
+Cfi Us Eur Jpn Smun	SJP	
+Cgf Nikkei 225 Ppns	PFT	
+Cgi Group	GIB	
+Cgm Ppn Dj Gl Titan	PNJ	
+Ch Energy	CHG	
+Champion Enterprises	CHB	
+Charles River Lab	CRL	
+Checkpoint	CKP	
+Chemed	CHE	
+Chesapeake	CPK	
+Chesapeake	CHK	
+Chevron	CVX	
+Chicago Bridge & Iron	CBI	
+Chicos F a S	CHS	
+Chimera Investment	CIM	
+China Digital Tv Holding Co.	STV	
+China Eastern Airlne	CEA	
+China Life	LFC	
+China Mobile	CHL	
+China Nepstar Ads	NPD	
+China Petroleum	SNP	
+China South Air	ZNH	
+China Telecom	CHA	
+China Unicom	CHU	
+China Yuchai	CYD	
+Chipotle Mex Grill	CMG	
+Chipotle Mexican Grill Cl B	CMG.B	
+Chiquita	CQB	
+Choice Hotel	CHH	
+Christopher	CBK	
+Chubb	CB	
+Chunghwa	CHT	
+Church Dwight	CHD	
+Ciba	CSB	
+Ciber	CBR	
+Cigna	CI	
+Cimarex	XEC	
+Cincinnati Bell	CBB	
+Cinemark Holdings	CNK	
+Circor	CIR	
+Cit Group	CIT	
+Citadel Broadcasting	CDL	
+Citigroup	C	
+Citigroup	MYP	
+Citigroup	BUW	
+Citigroup	BGI	
+Citigroup	EJQ	
+Citigroup	MOU	
+Citigroup Archer Dan	EYA	
+Citigroup Ebay Pacer	PPK	
+Citigroup Es50 Smuns	SOG	
+Citigroup Fdg	BEJ	
+Citigroup Fdg	ECB	
+Citigroup Fdg	EYJ	
+Citigroup Fndg Elks	EHC	
+Citigroup Funding	EKG	
+Citigroup Funding	EAZ	
+Citigroup Funding	EGJ	
+Citigroup Funding	PBA	
+Citigroup Funding	BLZ	
+Citigroup Funding In	ELQ	
+Citigroup Funding In	ECK	
+Citigroup Funding In	ESM	
+Citigroup Funding In	EBY	
+Citigroup Funding Sm	SPU	
+Citigroup Funding Sm	CKK	
+Citigroup Fundng	EAP	
+Citigroup Fundng	BUN	
+Citigroup Fundng	BYL	
+Citigroup Fundng	EGK	
+Citigroup Gbl Pp Nts	PDY	
+Citigroup Glb Nasdaq	PQU	
+Citigroup Global Markets Holdings	EHD	
+Citigroup Lasers Eur	IDJ	
+Citigroup Oracle Elk	EJS	
+Citigrp Fdg Bffr Nts	BLM	
+Citigrp Gbl Dj Ind	PPN	
+Citizen	CIA	
+City National	CYN	
+Cke Restaurants	CKR	
+Clarcor	CLC	
+Claymore/guggenheim	GOF	
+Clear Channel	CCU	
+Clear Channl Outdoor	CCO	
+Clearwater Paper Cp	CLW	
+Cleco	CNL	
+Cleveland Cliffs	CLF	
+Clorox	CLX	
+Cms Energy	CMS	
+Cnf	CNW	
+Cnh Global	CNH	
+Cnooc	CEO	
+Cnx Gas	CXG	
+Coach	COH	
+Coachmen	COA	
+Cobalt	CBZ	
+Coca Cola	CCE	
+Coca Cola	KO	
+Coca Cola Femsa	KOF	
+Coca Cola Hellen	CCH	
+Coeur D Alene	CDE	
+Cogdell Spencer	CSA	
+Cohen Steers Glbl	INB	
+Cohen & Steers	CNS	
+Coles Meyer	CM	
+Colfax Corp.	CFX	
+Colgate Palmolive	CL	
+Colonial Bancgroup	CNB	
+Colonial Properties Trust (al)	CLP	
+Comcast Corp (new)	CCW	
+Comcast Pcs Dbs	CCZ	
+Comerica	CMA	
+Comfort Systems	FIX	
+Commercial Metals	CMC	
+Commscope	CTV	
+Community Bank	CBU	
+Community Health	CYH	
+Comp De Beba Am	ABV	
+Comp De Bebi Am	ABV.C	
+Comp Energ Cemig	CIG	
+Companhia Brasil	CBD	
+Companhia Energetica De Minas Gerais	CIG.C	
+Companhia Paranaense De Energia	ELP	
+Companhia Sanea	SBS	
+Companhia Sider	SID	
+Companhia Vale	RIO	
+Companhia Vale Ads	VALE.P	
+Companhia Vale Do Rio Doce	VALE	
+Compania De Telecomm	CTC	
+Compania Min Buen	BVN	
+Compass Minerals	CMP	
+Compellent Tech	CML	
+Complete Production Services	CPX	
+Compton	CMZ	
+Computer Sciences	CSC	
+Compx	CIX	
+Comstock	CRK	
+Conagra Food	CAG	
+Concho Resources	CXO	
+Conocophillips	COP	
+Cons Edison	ED	
+Cons Energy	CNX	
+Cons Graphics	CGX	
+Conseco	CNO	
+Constellation	STZ.B	
+Constellation	STZ	
+Constellation Energy	CEG	
+Continental Resrces	CLR	
+Contl Airlines	CAL	
+Convergys	CVG	
+Cooper	COO	
+Cooper	CBE	
+Cooper Cameron	CAM	
+Cooper Tire Rubber	CTB	
+Copa	CPA	
+Core Labs	CLB	
+Corn Products	CPO	
+Cornell	CRN	
+Corning	GLW	
+Corp Asset Bckd	GYC	
+Corp Asset Bckd Gs	GYA	
+Corpbanca Reg S Gdr	BCA	
+Corporate Backed Cal	JBR	
+Corporate Office Properties	OFC	
+Corrections Corp America	CXW	
+Corus Entertainmt	CJR	
+Cosan Limited Cl A	CZZ	
+Cott	COT	
+Cousins Properties	CUZ	
+Covance	CVD	
+Covanta	CVA	
+Coventry Hlth Care	CVH	
+Covidien Ltd	COV	
+Cox Radio A	CXR	
+Cpfl Energia	CPL	
+Crane	CR	
+Crawford	CRD.A	
+Crawford	CRD.B	
+Credicorp	BAP	
+Credit Suisse	CSR	
+Credit Suisse Elemen	PMY	
+Credit Suisse Elemen	GWO	
+Credit Suisse Grp.	CS	
+Criimi Mae	CMM	
+Cross Timbers	CRT	
+Crown	CCK	
+Crown Castle	CCI	
+Cryolife	CRY	
+Css Industries	CSS	
+Csx	CSX	
+Cubic Corp	CUB	
+Cullen Frost	CFR	
+Culp	CFI	
+Cummins	CMI	
+Curtiss Wright	CW	
+Cushing Mlp Ttl Rtn	SRV	
+Cvs	CVS	
+Cypress Semiconductr	CY	
+Cytec	CYT

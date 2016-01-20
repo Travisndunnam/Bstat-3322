@@ -1,10 +1,10 @@
 {
-    "contents" : "require( alr4 )\ndata( Heights )\nhead( Heights )\n\nfit <- lm( dheight ~ mheight, data=Heights)\nsummary( fit )\n",
+    "contents" : "\n",
     "created" : 1448411425629.000,
     "dirty" : true,
     "encoding" : "",
     "folds" : "",
-    "hash" : "1749251226",
+    "hash" : "852952723",
     "id" : "ECB454C5",
     "lastKnownWriteTime" : 7011605692497750387,
     "path" : null,
